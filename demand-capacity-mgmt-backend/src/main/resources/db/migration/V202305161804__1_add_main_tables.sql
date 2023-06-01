@@ -20,6 +20,8 @@ create table demand
     supplier_id  integer constraint supplier_id references supplier(id),
     required_capacity numeric,
     actual_demand     numeric,
+    demand_category varchar(50),
+    unit_of_measure varchar(3),
     description varchar(400),
 );
 

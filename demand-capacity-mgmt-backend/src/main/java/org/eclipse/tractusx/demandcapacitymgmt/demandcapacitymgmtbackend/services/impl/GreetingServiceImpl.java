@@ -57,6 +57,8 @@ public class GreetingServiceImpl implements GreetingService {
                 .requiredCapacity(2.0)
                 .actualDemand(4.0)
                 .description("description of demand")
+                .demandCategory("Category of the Demand")
+                .unitOfMeasure("GRM")
                 .build();
         demandRepository.save(demand);
         
