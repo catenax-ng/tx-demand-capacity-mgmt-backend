@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.DemandEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.ProjectEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.SupplierEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.UnitMeasureEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.DemandRepository;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.ProjectRepository;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.SupplierRepository;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.UnitMeasureRepository;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.GreetingService;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ public class GreetingServiceImpl implements GreetingService {
     private final ProjectRepository projectRepository;
     private final SupplierRepository supplierRepository;
     private final DemandRepository demandRepository;
-    
+    private final UnitMeasureRepository unitMeasureRepository;
 
     public ProjectRepository getProjectRepository() {
         return projectRepository;
@@ -49,6 +51,15 @@ public class GreetingServiceImpl implements GreetingService {
                 .build();
         supplierRepository.save(supplier);
 
+
+        // Define the input for creating a unitMeasure
+        UnitMeasureEntity unitMeasure = UnitMeasureEntity.builder()
+                .id(1)
+                .un("GRM")
+                .name("gram")
+                .build();
+        unitMeasureRepository.save(unitMeasure);
+
         // Define the input for creating a demand
         DemandEntity demand = DemandEntity.builder()
                 .id(1)
@@ -58,7 +69,7 @@ public class GreetingServiceImpl implements GreetingService {
                 .actualDemand(4.0)
                 .description("description of demand")
                 .demandCategory("Category of the Demand")
-                .unitOfMeasure("GRM")
+                .unitMeasure(unitMeasure)
                 .build();
         demandRepository.save(demand);
         

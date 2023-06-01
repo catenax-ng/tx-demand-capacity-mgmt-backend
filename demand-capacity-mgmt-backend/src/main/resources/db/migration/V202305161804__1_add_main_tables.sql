@@ -21,8 +21,15 @@ create table demand
     required_capacity numeric,
     actual_demand     numeric,
     demand_category varchar(50),
-    unit_of_measure varchar(3),
-    description varchar(400),
+    unit_measure_id integer constraint unity_measure_id references unity_measure(id),
+    description varchar(400)
+);
+
+create table unity_measure
+(
+    id   integer constraint unity_measure_id primary key,
+    un varchar(3),
+    name varchar(40)
 );
 
 
