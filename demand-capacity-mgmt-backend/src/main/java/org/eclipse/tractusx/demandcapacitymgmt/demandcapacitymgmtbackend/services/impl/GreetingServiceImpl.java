@@ -46,7 +46,7 @@ public class GreetingServiceImpl implements GreetingService {
 
         // Define the input for creating a supplier
         SupplierEntity supplier = SupplierEntity.builder()
-                .id(1)
+                .id(2)
                 .name("Supplier 1")
                 .build();
         supplierRepository.save(supplier);
@@ -54,7 +54,7 @@ public class GreetingServiceImpl implements GreetingService {
 
         // Define the input for creating a unitMeasure
         UnitMeasureEntity unitMeasure = UnitMeasureEntity.builder()
-                .id(1)
+                .id(3)
                 .un("GRM")
                 .name("gram")
                 .build();
@@ -62,7 +62,7 @@ public class GreetingServiceImpl implements GreetingService {
 
         // Define the input for creating a demand
         DemandEntity demand = DemandEntity.builder()
-                .id(1)
+                .id(4)
                 .project(project)
                 .supplier(supplier)
                 .requiredCapacity(2.0)

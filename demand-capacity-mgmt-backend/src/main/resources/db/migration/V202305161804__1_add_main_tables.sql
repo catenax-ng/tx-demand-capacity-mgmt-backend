@@ -13,6 +13,13 @@ create table supplier
     name varchar(400)
 );
 
+create table unit_measure
+(
+    id   integer constraint unit_measure_id primary key,
+    un varchar(3),
+    name varchar(40)
+);
+
 create table demand
 (
     id integer not null constraint demand_pk primary key,
@@ -21,16 +28,11 @@ create table demand
     required_capacity numeric,
     actual_demand     numeric,
     demand_category varchar(50),
-    unit_measure_id integer constraint unity_measure_id references unity_measure(id),
+    unit_measure_id integer constraint unit_measure_id references unit_measure(id),
     description varchar(400)
 );
 
-create table unity_measure
-(
-    id   integer constraint unity_measure_id primary key,
-    un varchar(3),
-    name varchar(40)
-);
+
 
 
 
