@@ -6,17 +6,146 @@ servers:
   - url: https://localhost:8080/api/v1
 
 paths:
-  /hello-open:
-    get:
-      summary: return a simple generic greeting
-      operationId: getGreeting
+
+  /project:
+    post:
+      tags:
+        - Project
+      summary: create a project
+      operationId: postProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequestDto'
       responses:
         200:
           description: General greeting
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Greeting'
+                $ref: '#/components/schemas/ProjectResponseDto'
+    get:
+      tags:
+        - Project
+      summary: get a list of projects
+      operationId: getProjects
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectResponseDto'
+
+  /project/{project_id}:
+    get:
+      tags:
+        - Project
+      summary: get project by Id
+      operationId: getProjectById
+      parameters:
+        - in: 'path'
+          name: 'project_id'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponseDto'
+
+  /demand:
+    post:
+      tags:
+        - Demand
+      summary: create a demand
+      operationId: postDemand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandRequestDto'
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandRequestDto'
+    get:
+      tags:
+        - Demand
+      summary: get list of demand by ProjectId
+      operationId: getDemandsByProjectID
+      parameters:
+        - in: 'query'
+          name: 'project_id'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DemandRequestDto'
+
+  /demand/{demand_id}:
+    get:
+      tags:
+        - Demand
+      summary: get demand by Id
+      operationId: getDemandsById
+      parameters:
+        - in: 'path'
+          name: 'demand_id'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandResponseDto'
+
+    put:
+      tags:
+        - Demand
+      summary: update demand by Id
+      operationId: updateDemandsById
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandRequestUpdateDto'
+      parameters:
+        - in: 'path'
+          name: 'demand_id'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandResponseDto'
+
 components:
   schemas:
     Greeting:
@@ -26,3 +155,85 @@ components:
           type: string
           example: 'Hello from Spring'
           default: 'Hello visitor'
+
+    ProjectRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        noTimeProject:
+          type: boolean
+        projectId:
+          type: string
+
+    ProjectResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        noTimeProject:
+          type: boolean
+        projectId:
+          type: string
+
+    DemandRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        initialDemand:
+          type: number
+        actualDemand:
+          type: number
+        maximumDemand:
+          type: number
+        product_id:
+          type: string
+
+    DemandResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        initialDemand:
+          type: number
+        actualDemand:
+          type: number
+        maximumDemand:
+          type: number
+        product:
+          $ref: '#/components/schemas/ProductDto'
+
+    DemandRequestUpdateDto:
+      type: object
+      properties:
+        actualDemand:
+          type: number
+
+    ProductDto:
+      type: object
+      properties:
+        name:
+          type: string
+        un:
+          type: string
