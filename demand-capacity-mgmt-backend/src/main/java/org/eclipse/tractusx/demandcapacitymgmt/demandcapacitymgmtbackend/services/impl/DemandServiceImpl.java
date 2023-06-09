@@ -23,14 +23,13 @@ import org.springframework.stereotype.Service;
 public class DemandServiceImpl implements DemandService {
 
     private final DemandRepository demandRepository;
-    private final DataConverterUtil dataConverterUtil = new DataConverterUtil();
 
     private final ProjectService projectService;
 
     private final CompanyServiceImpl companyService;
 
     @Override
-    public void createDemand(DemandRequestDto demandRequestDto) throws Exception {
+    public DemandResponseDto createDemand(DemandRequestDto demandRequestDto) {
         ProjectEntity project = projectService.getProjectEntityById();
 
         CompanyEntity company = companyService.getCompanyById(Long.parseLong(demandRequestDto.getCompanyId()));
@@ -44,12 +43,16 @@ public class DemandServiceImpl implements DemandService {
             .maximumValue(demandRequestDto.getMaximumValue().doubleValue())
             .description(demandRequestDto.getDescription())
             .demandCategory(demandRequestDto.getDemandCategory())
-            .startDate(dataConverterUtil.convertFromString(demandRequestDto.getStartDate()))
-            .endDate(dataConverterUtil.convertFromString(demandRequestDto.getEndDate()))
+            .startDate(DataConverterUtil.convertFromString(demandRequestDto.getStartDate()))
+            .endDate(DataConverterUtil.convertFromString(demandRequestDto.getEndDate()))
             //.unitMeasure()
             .build();
 
-        demandRepository.save(demandEntity);
+        demandEntity = demandRepository.save(demandEntity);
+
+        DemandResponseDto responseDto = new DemandResponseDto();
+
+        return responseDto;
     }
 
     @Override

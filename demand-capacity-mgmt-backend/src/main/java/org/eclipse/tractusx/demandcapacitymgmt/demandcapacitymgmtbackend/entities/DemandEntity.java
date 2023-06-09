@@ -17,6 +17,7 @@ public class DemandEntity {
 
     @Id
     @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne

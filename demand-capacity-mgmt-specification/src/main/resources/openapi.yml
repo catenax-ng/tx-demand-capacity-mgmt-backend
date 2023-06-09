@@ -80,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DemandRequestDto'
+                $ref: '#/components/schemas/DemandResponseDto'
     get:
       tags:
         - Demand

@@ -22,7 +22,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
-
     @Override
     public ProjectResponseDto createProject(ProjectRequestDto projectRequestDto) {
         ProjectEntity project = ProjectEntity

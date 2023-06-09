@@ -5,7 +5,7 @@ import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandResponseD
 import java.util.List;
 
 public interface DemandService {
-    void createDemand(DemandRequestDto demandRequestDto) throws Exception;
+    DemandResponseDto createDemand(DemandRequestDto demandRequestDto);
 
     List<DemandResponseDto> getAllDemandsByProjectId(Integer projectId);
 
