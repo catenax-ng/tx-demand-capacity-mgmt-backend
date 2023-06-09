@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class GreetingServiceTest {
 
     @InjectMocks
-    private GreetingServiceImpl greetingService;
+    private GreetingService greetingService;
 
     private Greeting greeting = createGreeting();
 
