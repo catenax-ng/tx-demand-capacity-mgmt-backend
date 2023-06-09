@@ -1,36 +1,45 @@
 create table project
 (
-    id  integer  not null constraint id_pk primary key,
+    id  float constraint id_pk primary key,
     name         varchar(400),
     initial_date timestamp not null,
     final_date   timestamp,
-    type         varchar(10)
+    type         varchar(30)
 );
 
-create table supplier
+create table company
 (
-    id   integer constraint supplier_pk primary key,
+    id   float constraint company_pk primary key,
+    type varchar(10),
     name varchar(400)
 );
 
 create table unit_measure
 (
-    id   integer constraint unit_measure_id primary key,
+    id   float constraint unit_measure_id primary key,
     un varchar(3),
     name varchar(40)
 );
 
 create table demand
 (
-    id integer not null constraint demand_pk primary key,
-    project_id  integer constraint project_id references project(id),
-    supplier_id  integer constraint supplier_id references supplier(id),
-    required_capacity numeric,
-    actual_demand     numeric,
+    id float not null constraint demand_pk primary key,
+    project_id  float constraint project_id references project(id),
+    company_id  float constraint company_id references company(id),
+    required_value numeric,
+    delivered_value     numeric,
+    maximum_value     numeric,
     demand_category varchar(50),
     unit_measure_id integer constraint unit_measure_id references unit_measure(id),
-    description varchar(400)
+    description varchar(400),
+    start_date timestamp not null,
+    end_date   timestamp,
+    updated_date timestamp
 );
+
+
+CREATE SEQUENCE hibernate_sequence START 1;
+
 
 
 

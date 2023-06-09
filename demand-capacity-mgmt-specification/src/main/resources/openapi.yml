@@ -31,6 +31,7 @@ paths:
         - Project
       summary: get a list of projects
       operationId: getProjects
+
       responses:
         200:
           description: General greeting
@@ -169,6 +170,9 @@ components:
           type: boolean
         projectId:
           type: string
+        type:
+          type: string
+          enum: [ DEMAND_CAPACITY, MATERIAL_CAPACITY ]
 
     ProjectResponseDto:
       type: object
@@ -189,19 +193,25 @@ components:
     DemandRequestDto:
       type: object
       properties:
-        name:
-          type: string
         startDate:
           type: string
         endDate:
           type: string
-        initialDemand:
+        requiredValue:
           type: number
-        actualDemand:
+        deliveredValue:
           type: number
-        maximumDemand:
+        maximumValue:
           type: number
-        product_id:
+        productId:
+          type: string
+        projectId:
+          type: string
+        demandCategory:
+          type: string
+        companyId:
+          type: string
+        description:
           type: string
 
     DemandResponseDto:
@@ -215,12 +225,18 @@ components:
           type: string
         endDate:
           type: string
-        initialDemand:
+        requiredValue:
           type: number
-        actualDemand:
+        deliveredValue:
           type: number
-        maximumDemand:
+        maximumValue:
           type: number
+        description:
+          type: string
+        demandCategory:
+          type: string
+        companyId:
+          type: string
         product:
           $ref: '#/components/schemas/ProductDto'
 
