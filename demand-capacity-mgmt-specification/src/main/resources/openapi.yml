@@ -141,7 +141,7 @@ paths:
           required: true
       responses:
         200:
-          description: General greeting
+          description: Update of demands
           content:
             application/json:
               schema:
@@ -149,14 +149,7 @@ paths:
 
 components:
   schemas:
-    Greeting:
-      type: object
-      properties:
-        message:
-          type: string
-          example: 'Hello from Spring'
-          default: 'Hello visitor'
-
+    
     ProjectRequestDto:
       type: object
       properties:
