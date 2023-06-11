@@ -48,8 +48,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDto getProjectById() {
-        Optional<ProjectEntity> project = projectRepository.findById(1l);
+    public ProjectResponseDto getProjectById(Long projectId) {
+        Optional<ProjectEntity> project = projectRepository.findById(projectId);
 
         if (project.isEmpty()) {
             throw new NotFoundException("");
@@ -59,8 +59,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectEntity getProjectEntityById() {
-        Optional<ProjectEntity> project = projectRepository.findById(1l);
+    public ProjectEntity getProjectEntityById(Long projectId) {
+        Optional<ProjectEntity> project = projectRepository.findById(projectId);
         if (project.isEmpty()) {
             throw new NotFoundException("");
         }

@@ -24,8 +24,9 @@ public class DemandController implements DemandApi {
     }
 
     @Override
-    public ResponseEntity<List<DemandRequestDto>> getDemandsByProjectID(String projectId) {
-        return null;
+    public ResponseEntity<List<DemandResponseDto>> getDemandsByProjectID(String projectId) {
+        List<DemandResponseDto> demandResponseDtos = demandService.getAllDemandsByProjectId(Long.parseLong(projectId));
+        return ResponseEntity.status(HttpStatus.OK).body(demandResponseDtos);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DemandController implements DemandApi {
         String demandId,
         DemandRequestUpdateDto demandRequestUpdateDto
     ) {
-        demandService.updateDemand();
-        return null;
+        DemandResponseDto responseDto = demandService.updateDemand(Long.parseLong(demandId), demandRequestUpdateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }

@@ -1,7 +1,9 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestDto;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestUpdateDto;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandResponseDto;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +32,7 @@ public class DemandServiceImpl implements DemandService {
 
     @Override
     public DemandResponseDto createDemand(DemandRequestDto demandRequestDto) {
-        ProjectEntity project = projectService.getProjectEntityById();
+        ProjectEntity project = projectService.getProjectEntityById(Long.parseLong(demandRequestDto.getProjectId()));
 
         CompanyEntity company = companyService.getCompanyById(Long.parseLong(demandRequestDto.getCompanyId()));
 
@@ -45,47 +47,59 @@ public class DemandServiceImpl implements DemandService {
             .demandCategory(demandRequestDto.getDemandCategory())
             .startDate(DataConverterUtil.convertFromString(demandRequestDto.getStartDate()))
             .endDate(DataConverterUtil.convertFromString(demandRequestDto.getEndDate()))
-            //.unitMeasure()
             .build();
 
         demandEntity = demandRepository.save(demandEntity);
 
-        DemandResponseDto responseDto = new DemandResponseDto();
-
-        return responseDto;
+        return convertDemandResponseDto(demandEntity);
     }
 
     @Override
-    public List<DemandResponseDto> getAllDemandsByProjectId(Integer projectId) {
-        ProjectEntity project = projectService.getProjectEntityById();
+    public List<DemandResponseDto> getAllDemandsByProjectId(Long projectId) {
+        ProjectEntity project = projectService.getProjectEntityById(projectId);
 
         List<DemandEntity> demandEntityList = demandRepository.findAllByProject(project);
 
-        return demandEntityList
-            .stream()
-            .map(
-                demandEntity -> {
-                    DemandResponseDto responseDto = new DemandResponseDto();
-                    responseDto.setCompanyId(demandEntity.getCompany().getId().toString());
-                    return responseDto;
-                }
-            )
-            .collect(Collectors.toList());
+        return demandEntityList.stream().map(this::convertDemandResponseDto).collect(Collectors.toList());
     }
 
     @Override
     public DemandResponseDto getDemandById(Long demandId) {
+        DemandEntity demand = getDemandEntity(demandId);
+        return convertDemandResponseDto(demand);
+    }
+
+    @Override
+    public DemandResponseDto updateDemand(Long demandId, DemandRequestUpdateDto demandRequestUpdateDto) {
+        DemandEntity demand = getDemandEntity(demandId);
+
+        demand.setDeliveredValue(demandRequestUpdateDto.getActualDemand().doubleValue());
+
+        demand = demandRepository.save(demand);
+        return convertDemandResponseDto(demand);
+    }
+
+    private DemandEntity getDemandEntity(Long demandId) {
         Optional<DemandEntity> demand = demandRepository.findById(demandId);
 
         if (demand.isEmpty()) {
             throw new NotFoundException("");
         }
 
+        return demand.get();
+    }
+
+    private DemandResponseDto convertDemandResponseDto(DemandEntity demandEntity) {
         DemandResponseDto responseDto = new DemandResponseDto();
+        responseDto.setId(demandEntity.getId().toString());
+        responseDto.setDescription(demandEntity.getDescription());
+        responseDto.setStartDate(demandEntity.getStartDate().toString());
+        responseDto.setEndDate(demandEntity.getEndDate().toString());
+        responseDto.setMaximumValue(BigDecimal.valueOf(demandEntity.getMaximumValue()));
+        responseDto.setRequiredValue(BigDecimal.valueOf(demandEntity.getRequiredValue()));
+        responseDto.setCompanyId(demandEntity.getCompany().getId().toString());
+        responseDto.setDeliveredValue(BigDecimal.valueOf(demandEntity.getDeliveredValue()));
 
         return responseDto;
     }
-
-    @Override
-    public void updateDemand() {}
 }

@@ -18,7 +18,7 @@ public class ProjectController implements ProjectApi {
 
     @Override
     public ResponseEntity<ProjectResponseDto> getProjectById(String projectId) throws Exception {
-        ProjectResponseDto responseDto = projectService.getProjectById();
+        ProjectResponseDto responseDto = projectService.getProjectById(Long.parseLong(projectId));
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 

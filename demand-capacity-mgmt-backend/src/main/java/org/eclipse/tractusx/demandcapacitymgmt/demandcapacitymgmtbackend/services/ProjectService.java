@@ -12,7 +12,7 @@ public interface ProjectService {
 
     List<ProjectResponseDto> getAllProjects();
 
-    ProjectResponseDto getProjectById();
+    ProjectResponseDto getProjectById(Long projectId);
 
-    ProjectEntity getProjectEntityById();
+    ProjectEntity getProjectEntityById(Long projectId);
 }

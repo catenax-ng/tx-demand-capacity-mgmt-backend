@@ -1,9 +1,15 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services;
 
-import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectRequestDto;
-import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectResponseDto;
-import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectRequestDto.TypeEnum;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectRequestDto;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectRequestDto.TypeEnum;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.ProjectResponseDto;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.ProjectEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.enums.ProjectType;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.NotFoundException;
@@ -16,15 +22,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 class ProjectServiceImplTest {
+
     @Mock
     private ProjectRepository projectRepository;
 
@@ -38,40 +37,55 @@ class ProjectServiceImplTest {
 
     @Test
     void createProject_shouldReturnGeneratedProjectResponseDto() {
-    // Arrange
-    ProjectRequestDto projectRequestDto = new ProjectRequestDto();
-    projectRequestDto.setName("Test Project");
-    projectRequestDto.setStartDate("2023-01-01");
-    projectRequestDto.setEndDate("2023-12-31");
-    projectRequestDto.setType(TypeEnum.DEMAND_CAPACITY);
+        // Arrange
+        ProjectRequestDto projectRequestDto = new ProjectRequestDto();
+        projectRequestDto.setName("Test Project");
+        projectRequestDto.setStartDate("2023-01-01");
+        projectRequestDto.setEndDate("2023-12-31");
+        projectRequestDto.setType(TypeEnum.DEMAND_CAPACITY);
 
-    ProjectEntity savedProject = new ProjectEntity();
-    savedProject.setId(1L);
-    savedProject.setName("Test Project");
-    savedProject.setInitialDate(LocalDateTime.parse("2023-01-01T00:00:00"));
-    savedProject.setFinalDate(LocalDateTime.parse("2023-12-31T23:59:59"));
-    savedProject.setType(ProjectType.DEMAND_CAPACITY);
+        ProjectEntity savedProject = new ProjectEntity();
+        savedProject.setId(1L);
+        savedProject.setName("Test Project");
+        savedProject.setInitialDate(LocalDateTime.parse("2023-01-01T00:00:00"));
+        savedProject.setFinalDate(LocalDateTime.parse("2023-12-31T23:59:59"));
+        savedProject.setType(ProjectType.DEMAND_CAPACITY);
 
-    when(projectRepository.save(any(ProjectEntity.class))).thenReturn(savedProject);
+        when(projectRepository.save(any(ProjectEntity.class))).thenReturn(savedProject);
 
-    // Act
-    ProjectResponseDto result = projectService.createProject(projectRequestDto);
+        // Act
+        ProjectResponseDto result = projectService.createProject(projectRequestDto);
 
-    // Assert
-    verify(projectRepository, times(1)).save(any(ProjectEntity.class));
-    Assertions.assertEquals(savedProject.getId().toString(), result.getId());
-    Assertions.assertEquals(savedProject.getName(), result.getName());
-    Assertions.assertEquals(savedProject.getInitialDate().toString(), result.getStartDate());
-    Assertions.assertEquals(savedProject.getFinalDate().toString(), result.getEndDate());
-}
-
+        // Assert
+        verify(projectRepository, times(1)).save(any(ProjectEntity.class));
+        Assertions.assertEquals(savedProject.getId().toString(), result.getId());
+        Assertions.assertEquals(savedProject.getName(), result.getName());
+        Assertions.assertEquals(savedProject.getInitialDate().toString(), result.getStartDate());
+        Assertions.assertEquals(savedProject.getFinalDate().toString(), result.getEndDate());
+    }
 
     @Test
     void getAllProjects_shouldReturnListOfProjectResponseDto() {
         // Arrange
         List<ProjectEntity> projectEntities = new ArrayList<>();
-        projectEntities.add(new ProjectEntity(1L, "Project 1", LocalDateTime.parse("2023-01-01T00:00:00"), LocalDateTime.parse("2023-12-31T23:59:59"), ProjectType.DEMAND_CAPACITY));
-        projectEntities.add(new ProjectEntity(2L, "Project 2", LocalDateTime.parse("2023-01-01T00:00:00"), LocalDateTime.parse("2023-12-31T23:59:59"), ProjectType.DEMAND_CAPACITY));
+        projectEntities.add(
+            new ProjectEntity(
+                1L,
+                "Project 1",
+                LocalDateTime.parse("2023-01-01T00:00:00"),
+                LocalDateTime.parse("2023-12-31T23:59:59"),
+                ProjectType.DEMAND_CAPACITY
+            )
+        );
+        projectEntities.add(
+            new ProjectEntity(
+                2L,
+                "Project 2",
+                LocalDateTime.parse("2023-01-01T00:00:00"),
+                LocalDateTime.parse("2023-12-31T23:59:59"),
+                ProjectType.DEMAND_CAPACITY
+            )
+        );
 
         when(projectRepository.findAll()).thenReturn(projectEntities);
 
@@ -94,11 +108,17 @@ class ProjectServiceImplTest {
     @Test
     void getProjectById_shouldReturnProjectResponseDtoWhenProjectExists() {
         // Arrange
-        ProjectEntity project = new ProjectEntity(1L, "Test Project",  LocalDateTime.parse("2023-01-01T00:00:00"), LocalDateTime.parse("2023-12-31T23:59:59"), ProjectType.DEMAND_CAPACITY);
+        ProjectEntity project = new ProjectEntity(
+            1L,
+            "Test Project",
+            LocalDateTime.parse("2023-01-01T00:00:00"),
+            LocalDateTime.parse("2023-12-31T23:59:59"),
+            ProjectType.DEMAND_CAPACITY
+        );
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
 
         // Act
-        ProjectResponseDto result = projectService.getProjectById();
+        ProjectResponseDto result = projectService.getProjectById(1l);
 
         // Assert
         verify(projectRepository, times(1)).findById(1L);
@@ -114,17 +134,23 @@ class ProjectServiceImplTest {
         when(projectRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> projectService.getProjectById());
+        Assertions.assertThrows(NotFoundException.class, () -> projectService.getProjectById(1l));
     }
 
     @Test
     void getProjectEntityById_shouldReturnProjectEntityWhenProjectExists() {
         // Arrange
-        ProjectEntity project = new ProjectEntity(1L, "Test Project",  LocalDateTime.parse("2023-01-01T00:00:00"), LocalDateTime.parse("2023-12-31T23:59:59"), ProjectType.DEMAND_CAPACITY);
+        ProjectEntity project = new ProjectEntity(
+            1L,
+            "Test Project",
+            LocalDateTime.parse("2023-01-01T00:00:00"),
+            LocalDateTime.parse("2023-12-31T23:59:59"),
+            ProjectType.DEMAND_CAPACITY
+        );
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
 
         // Act
-        ProjectEntity result = projectService.getProjectEntityById();
+        ProjectEntity result = projectService.getProjectEntityById(1l);
 
         // Assert
         verify(projectRepository, times(1)).findById(1L);
@@ -137,6 +163,6 @@ class ProjectServiceImplTest {
         when(projectRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        Assertions.assertThrows(NotFoundException.class, () -> projectService.getProjectEntityById());
+        Assertions.assertThrows(NotFoundException.class, () -> projectService.getProjectEntityById(1l));
     }
 }
