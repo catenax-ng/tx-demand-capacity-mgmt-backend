@@ -16,7 +16,7 @@
 name: build
 
 on:
-    push:
+    pull_request:
       branches:
         - 'main'
       tags:
@@ -44,10 +44,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       
-      - name: Get version from pom.xml
-        run: mvn help:evaluate -Dexpression='project.version' -q -DforceStdout
-        id: version
-        shell: bash
+     # - name: Get version from pom.xml
+     #   run: mvn help:evaluate -Dexpression='project.version' -q -DforceStdout
+     #   id: version
+     #   shell: bash
 
       - name: Run Tests
         run: ./demand-capacity-mgmt-backend/mvnw -B test
