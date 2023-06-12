@@ -16,9 +16,12 @@
 name: build
 
 on:
-  pull_request:
-    branches:
-      - 'main'
+    pull_request:
+      branches:
+        - 'main'
+      tags:
+        - 'v*.*.*'
+        - 'v*.*.*-*'
 
 env:
   REGISTRY: ghcr.io
@@ -40,6 +43,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      
+      - name: Get version from pom.xml
+        run: mvn help:evaluate -Dexpression='project.version' -q -DforceStdout
+        id: version
+        shell: bash
 
       - name: Run Tests
         run: ./demand-capacity-mgmt-backend/mvnw -B test
@@ -67,20 +75,17 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
-          flavor: |
-            latest=true
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./build/Dockerfile
+          # push: ${{ github.event_name != 'pull_request' }}
           push: true
-          # build tag :main
-          tags: ${{ steps.meta.outputs.tags }}
           # build tag :latest
-          # tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          # labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
 
 #      - name: Cache SonarCloud packages
 #        uses: actions/cache@v3
