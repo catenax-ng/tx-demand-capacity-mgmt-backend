@@ -147,9 +147,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/DemandResponseDto'
 
+  /weekbasedcapacitygroup:
+    post:
+      tags:
+        - weekBasedCapacityGroup
+      summary: weekBasedCapacityGroup
+      operationId: postWeekBasedCapacityGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeekBasedCapacityGroupRequest'
+      responses:
+        200:
+          description: weekBasedCapacityGroup endpoint
+
+  /weekbasedmaterialdemand:
+    post:
+      tags:
+        - weekBasedMaterialDemand
+      summary: weekBasedCapacityGroup
+      operationId: postWeekBasedMaterialDemand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeekBasedMaterialDemandRequestDto'
+      responses:
+        200:
+          description: weekBasedCapacityGroup endpoint
+
 components:
   schemas:
-    
+
     ProjectRequestDto:
       type: object
       properties:
@@ -237,4 +269,111 @@ components:
         name:
           type: string
         un:
+          type: string
+
+    DemandCategoryDto:
+      type: object
+      properties:
+        demandCategory:
+          type: string
+
+    LinkedDemandSeries:
+      type: object
+      properties:
+        materialNumberCustomer:
+          type: string
+        materialNumberSupplier:
+          type: string
+        customerLocation:
+          type: string
+        demandCategory:
+          $ref: '#/components/schemas/DemandCategoryDto'
+
+    CapacitiesDto:
+      type: object
+      properties:
+        calendarWeek:
+          type: string
+        actualCapacity:
+          type: string
+        maximumCapacity:
+          type: string
+
+    WeekBasedCapacityGroupRequest:
+      type: object
+      properties:
+        unityOfMeasure:
+          type: string
+        linkedDemandSeries:
+          $ref: '#/components/schemas/LinkedDemandSeries'
+        supplier:
+          type: string
+        name:
+          type: string
+        supplierLocations:
+          type: array
+          items:
+            type: string
+        capacities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacitiesDto'
+        changedAt:
+          type: string
+        capacityGroupId:
+          type: string
+        customer:
+          type: string
+
+
+    DemandSeriesDto:
+      type: object
+      properties:
+        demand:
+          type: string
+        calendarWeek:
+          type: string
+
+    DemandSeriesCategoryDto:
+      type: object
+      properties:
+        demandCategoryCode:
+          type: string
+
+    DemandWeekSeriesDto:
+      type: object
+      properties:
+        expectedSupplierLocation:
+          type: string
+        demands:
+          type: array
+          items:
+            $ref: '#/components/schemas/DemandSeriesDto'
+        customerLocation:
+          type: string
+        demandCategory:
+          $ref: '#/components/schemas/DemandSeriesCategoryDto'
+
+    WeekBasedMaterialDemandRequestDto:
+      type: object
+      properties:
+        unityOfMeasure:
+          type: string
+        materialDescriptionCustomer:
+          type: string
+        materialDemandId:
+          type: string
+        materialNumberSupplier:
+          type: string
+        supplier:
+          type: string
+        changedAt:
+          type: string
+        demandSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/DemandWeekSeriesDto'
+        materialNumberCustomer:
+          type: string
+        customer:
           type: string
