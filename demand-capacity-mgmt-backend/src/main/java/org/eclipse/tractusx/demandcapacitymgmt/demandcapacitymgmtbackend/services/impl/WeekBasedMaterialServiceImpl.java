@@ -8,8 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.WeekBasedMaterialDemandEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.jsonEntities.WeekBasedMaterialDemand;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.jsonEntities.WeekDemandSeries;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.BadRequestException;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.WeekBasedMaterialDemandRepository;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.WeekBasedMaterialService;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.DataConverterUtil;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.UUIDUtil;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -21,12 +24,31 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
 
     @Override
     public void createWeekBasedMaterial(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
+        validateFields(weekBasedMaterialDemandRequestDto);
         WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(weekBasedMaterialDemandRequestDto);
         weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
 
         List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.findAll();
 
-        weekBasedMaterialDemandEntities.forEach(System.out::println);
+    }
+
+    private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto){
+
+        if(!UUIDUtil.checkValidUUID(weekBasedMaterialDemandRequestDto.getMaterialDemandId())){
+            throw new BadRequestException("not a valid date");
+
+        }
+
+        weekBasedMaterialDemandRequestDto.getDemandSeries().forEach(demandWeekSeriesDto -> {
+
+            demandWeekSeriesDto.getDemands().forEach(demandSeriesDto -> {
+
+                if(!DataConverterUtil.itsMonday(demandSeriesDto.getCalendarWeek())){
+                    throw new BadRequestException("not a valid date");
+                }
+
+            });
+        });
     }
 
     private WeekBasedMaterialDemandEntity convertEntity(
