@@ -305,7 +305,9 @@ components:
         unityOfMeasure:
           type: string
         linkedDemandSeries:
-          $ref: '#/components/schemas/LinkedDemandSeries'
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkedDemandSeries'
         supplier:
           type: string
         name:

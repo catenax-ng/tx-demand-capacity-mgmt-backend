@@ -11,5 +11,4 @@ public class LikedDemandSeries {
     private String materialNumberSupplier;
     private String customerLocation;
     private DemandCategory demandCategory;
-
 }

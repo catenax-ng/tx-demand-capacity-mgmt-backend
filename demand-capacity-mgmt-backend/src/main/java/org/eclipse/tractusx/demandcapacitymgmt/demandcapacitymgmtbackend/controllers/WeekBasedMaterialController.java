@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeekBasedMaterialController implements WeekBasedMaterialDemandApi {
 
     private final WeekBasedMaterialService weekBasedMaterialService;
-    @Override
-    public ResponseEntity<Void> postWeekBasedMaterialDemand(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
 
+    @Override
+    public ResponseEntity<Void> postWeekBasedMaterialDemand(
+        WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto
+    ) {
         weekBasedMaterialService.createWeekBasedMaterial(weekBasedMaterialDemandRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

@@ -1,9 +1,8 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.jsonEntities;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -18,5 +17,4 @@ public class WeekBasedCapacityGroup {
     private String customer;
     private List<Capacity> capacities;
     private List<LikedDemandSeries> likedDemandSeries;
-
 }

@@ -14,7 +14,7 @@ public class DataConverterUtil {
         return LocalDateTime.of(ld, LocalDateTime.now().toLocalTime());
     }
 
-    public static Boolean itsMonday(String date){
+    public static Boolean itsMonday(String date) {
         LocalDateTime localDateTime = convertFromString(date);
         String dayOfWeek = localDateTime.getDayOfWeek().toString();
         return "MONDAY".equals(dayOfWeek);
