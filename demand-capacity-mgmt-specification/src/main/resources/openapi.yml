@@ -146,6 +146,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DemandResponseDto'
+    delete:
+      tags:
+        - Demand
+      summary: delete demand by Id
+      operationId: deleteDemandsById
+      parameters:
+        - in: 'path'
+          name: 'demand_id'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Delete demand with id
+
 
   /weekbasedcapacitygroup:
     post:

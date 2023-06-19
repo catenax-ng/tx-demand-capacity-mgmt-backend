@@ -79,6 +79,14 @@ public class DemandServiceImpl implements DemandService {
         return convertDemandResponseDto(demand);
     }
 
+    @Override
+    public void deleteDemandById(Long demandId) {
+        DemandEntity demand = getDemandEntity(demandId);
+
+        demandRepository.delete(demand);
+
+    }
+
     private DemandEntity getDemandEntity(Long demandId) {
         Optional<DemandEntity> demand = demandRepository.findById(demandId);
 
