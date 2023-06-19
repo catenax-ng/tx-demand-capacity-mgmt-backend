@@ -7,20 +7,16 @@ import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.U
 import org.springframework.stereotype.Service;
 
 @Service
-public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroupService{
+public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroupService {
+
     @Override
     public void createWeekBasedCapacityGroup(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {
-
         validateFields(weekBasedCapacityGroupRequest);
-
     }
 
-
     private void validateFields(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {
-
-        if(!UUIDUtil.checkValidUUID(weekBasedCapacityGroupRequest.getCapacityGroupId())){
+        if (!UUIDUtil.checkValidUUID(weekBasedCapacityGroupRequest.getCapacityGroupId())) {
             throw new BadRequestException("not a ID");
         }
-
     }
 }

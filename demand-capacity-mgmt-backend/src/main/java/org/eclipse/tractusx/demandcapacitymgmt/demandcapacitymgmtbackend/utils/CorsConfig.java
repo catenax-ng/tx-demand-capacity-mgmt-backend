@@ -10,7 +10,14 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
-            .addMapping("/demand")
+            .addMapping("/demand**") // Match any path starting with "/demand"
+            .allowedOrigins("http://localhost:3000")
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedHeaders("*")
+            .allowCredentials(true);
+
+        registry
+            .addMapping("/demand/{demand_id}") // Match any path starting with "/delete/something"
             .allowedOrigins("http://localhost:3000")
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*")

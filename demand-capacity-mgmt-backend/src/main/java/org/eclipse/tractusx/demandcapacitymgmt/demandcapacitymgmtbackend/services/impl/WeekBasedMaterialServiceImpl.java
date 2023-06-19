@@ -29,26 +29,28 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
         weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
 
         List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.findAll();
-
     }
 
-    private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto){
-
-        if(!UUIDUtil.checkValidUUID(weekBasedMaterialDemandRequestDto.getMaterialDemandId())){
+    private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
+        if (!UUIDUtil.checkValidUUID(weekBasedMaterialDemandRequestDto.getMaterialDemandId())) {
             throw new BadRequestException("not a valid date");
-
         }
 
-        weekBasedMaterialDemandRequestDto.getDemandSeries().forEach(demandWeekSeriesDto -> {
-
-            demandWeekSeriesDto.getDemands().forEach(demandSeriesDto -> {
-
-                if(!DataConverterUtil.itsMonday(demandSeriesDto.getCalendarWeek())){
-                    throw new BadRequestException("not a valid date");
+        weekBasedMaterialDemandRequestDto
+            .getDemandSeries()
+            .forEach(
+                demandWeekSeriesDto -> {
+                    demandWeekSeriesDto
+                        .getDemands()
+                        .forEach(
+                            demandSeriesDto -> {
+                                if (!DataConverterUtil.itsMonday(demandSeriesDto.getCalendarWeek())) {
+                                    throw new BadRequestException("not a valid date");
+                                }
+                            }
+                        );
                 }
-
-            });
-        });
+            );
     }
 
     private WeekBasedMaterialDemandEntity convertEntity(

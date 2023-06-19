@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class WeekBasedCapacityGroupController implements WeekBasedCapacityGroupApi {
+
     @Override
-    public ResponseEntity<Void> postWeekBasedCapacityGroup(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {
+    public ResponseEntity<Void> postWeekBasedCapacityGroup(
+        WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest
+    ) {
         return null;
     }
 }

@@ -13,4 +13,6 @@ public interface DemandService {
     DemandResponseDto getDemandById(Long demandId);
 
     DemandResponseDto updateDemand(Long demandId, DemandRequestUpdateDto demandRequestUpdateDto);
+
+    void deleteDemandById(Long demandId);
 }

@@ -18,6 +18,12 @@ public class DemandController implements DemandApi {
     private final DemandService demandService;
 
     @Override
+    public ResponseEntity<Void> deleteDemandsById(String demandId) throws Exception {
+        demandService.deleteDemandById(Long.parseLong(demandId));
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Override
     public ResponseEntity<DemandResponseDto> getDemandsById(String demandId) {
         DemandResponseDto responseDto = demandService.getDemandById(Long.parseLong(demandId));
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
