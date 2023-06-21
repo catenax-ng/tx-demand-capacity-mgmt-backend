@@ -32,4 +32,7 @@ public class WeekBasedMaterialDemandEntity {
     @Column(name = "data", columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
     private WeekBasedMaterialDemand weekBasedMaterialDemand;
+
+    @Column(name = "viewed")
+    private Boolean viewed;
 }

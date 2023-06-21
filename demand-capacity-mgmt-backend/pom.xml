@@ -19,7 +19,9 @@
         <plugin.prettier.goal>write</plugin.prettier.goal>
         <sonar.organization>catenax-ng</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    </properties> 
+        <spring-cloud.version>2020.0.3-SNAPSHOT</spring-cloud.version>
+
+    </properties>
 
     <dependencies>
         <dependency>
@@ -68,6 +70,7 @@
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
+
     </dependencies>
 
     <build>

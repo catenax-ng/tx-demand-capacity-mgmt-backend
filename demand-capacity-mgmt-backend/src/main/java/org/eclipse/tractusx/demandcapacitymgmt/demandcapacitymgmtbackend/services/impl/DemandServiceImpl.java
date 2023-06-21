@@ -84,7 +84,6 @@ public class DemandServiceImpl implements DemandService {
         DemandEntity demand = getDemandEntity(demandId);
 
         demandRepository.delete(demand);
-
     }
 
     private DemandEntity getDemandEntity(Long demandId) {

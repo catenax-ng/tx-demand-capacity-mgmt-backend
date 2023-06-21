@@ -4,4 +4,8 @@ import eclipse.tractusx.demand_capacity_mgmt_specification.model.WeekBasedCapaci
 
 public interface WeekBasedCapacityGroupService {
     void createWeekBasedCapacityGroup(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest);
+
+    void receiveWeekBasedCapacityGroup();
+
+    void sendWeekBasedCapacityGroup();
 }

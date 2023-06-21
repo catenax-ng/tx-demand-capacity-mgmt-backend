@@ -34,4 +34,7 @@ public class WeekBasedCapacityGroupEntity {
     @Column(name = "data", columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
     private WeekBasedCapacityGroup weekBasedCapacityGroup;
+
+    @Column(name = "viewed")
+    private Boolean viewed;
 }
