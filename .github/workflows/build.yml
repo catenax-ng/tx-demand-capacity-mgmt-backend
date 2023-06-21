@@ -81,8 +81,8 @@ jobs:
         with:
           context: .
           file: ./build/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          #push: true
+          #push: ${{ github.event_name != 'pull_request' }}
+          push: true
           # build tag :latest
           tags: ${{ steps.meta.outputs.tags }}, ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
