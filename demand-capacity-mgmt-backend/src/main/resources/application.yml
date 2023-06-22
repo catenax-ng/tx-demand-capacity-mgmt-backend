@@ -3,10 +3,13 @@ spring:
     database: POSTGRESQL
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydb
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${URL:localhost:5432}/${DB_NAME:mydb}
+    username: ${USER:postgres}
+    password: ${PASS:postgres}
     driverClassName: org.postgresql.Driver
   sql:
     init:
       platform: postgres
+
+
+#url: jdbc:oracle:thin:@//${ORACLEDB_HOST}:${ORACLEDB_PORT}/${ORACLEDB_SERVICENAME}

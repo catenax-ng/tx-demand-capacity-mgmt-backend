@@ -32,6 +32,6 @@ COPY --from=build demand-capacity-mgmt-backend/target/*.jar ./app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "./app.jar"]
+CMD ["java", "-jar", "./app.jar","--spring.profile=${PROFILE}"]
 
 
