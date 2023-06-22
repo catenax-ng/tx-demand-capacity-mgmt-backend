@@ -16,6 +16,6 @@ public class WeekBasedMaterialSchedulerReceived {
     @Scheduled(fixedRate = 60 * 60 * 1000)
     public void materialDemandSync() throws URISyntaxException {
 
-        weekBasedMaterialService.sendWeekBasedMaterial();
+        weekBasedMaterialService.receiveWeekBasedMaterial();
     }
 }

@@ -3,7 +3,7 @@ spring:
     database: POSTGRESQL
     show-sql: true
   datasource:
-    url: jdbc:postgresql://${URL:localhost:5432}/${DB_NAME:mydb}
+    url: jdbc:postgresql://${URL:localhost:5432}/${DB_NAME:dmc}
     username: ${USER:postgres}
     password: ${PASS:postgres}
     driverClassName: org.postgresql.Driver

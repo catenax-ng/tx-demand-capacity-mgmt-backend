@@ -14,5 +14,6 @@ public class WeekBasedCapacityGroupScheduler {
     @Scheduled(fixedRate = 60 * 60 * 1000)
     public void capacityGroupSync() {
 
+        weekBasedCapacityGroupService.sendWeekBasedCapacityGroup();
     }
 }
