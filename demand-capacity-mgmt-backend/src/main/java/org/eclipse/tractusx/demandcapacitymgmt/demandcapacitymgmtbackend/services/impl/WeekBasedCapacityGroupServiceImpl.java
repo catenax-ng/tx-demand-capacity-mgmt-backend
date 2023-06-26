@@ -31,34 +31,39 @@ public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroup
     private final CustomerRepository customerRepository;
 
     @Override
-    public void createWeekBasedCapacityGroup(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {
-        validateFields(weekBasedCapacityGroupRequest);
+    public void createWeekBasedCapacityGroup(List<WeekBasedCapacityGroupRequest> weekBasedCapacityGroupRequestList) {
+        weekBasedCapacityGroupRequestList.forEach(
+            weekBasedCapacityGroupRequest -> {
+                validateFields(weekBasedCapacityGroupRequest);
 
-        WeekBasedCapacityGroupEntity weekBasedCapacityGroup = convertEntity(weekBasedCapacityGroupRequest);
-        weekBasedCapacityGroupRepository.save(weekBasedCapacityGroup);
+                WeekBasedCapacityGroupEntity weekBasedCapacityGroup = convertEntity(weekBasedCapacityGroupRequest);
+                weekBasedCapacityGroupRepository.save(weekBasedCapacityGroup);
+            }
+        );
     }
 
     @Override
     public void receiveWeekBasedCapacityGroup() {
-        List<WeekBasedCapacityGroupEntity> weekBasedCapacityGroupEntities = weekBasedCapacityGroupRepository.getAllByViewed(false);
+        List<WeekBasedCapacityGroupEntity> weekBasedCapacityGroupEntities = weekBasedCapacityGroupRepository.getAllByViewed(
+            false
+        );
 
         //todo define if we are going to send email or notification when we have new requestMaterials
-        weekBasedCapacityGroupEntities.forEach(weekBasedCapacityGroupEntity -> {
-            weekBasedCapacityGroupEntity.setViewed(true);
-
-        });
+        weekBasedCapacityGroupEntities.forEach(
+            weekBasedCapacityGroupEntity -> {
+                weekBasedCapacityGroupEntity.setViewed(true);
+            }
+        );
 
         weekBasedCapacityGroupRepository.saveAll(weekBasedCapacityGroupEntities);
     }
 
     @Override
     public void sendWeekBasedCapacityGroup() {
-
         Optional<CustomerEntity> supplierEntityOpt = customerRepository.findById(1l);
 
         //TODO we still dont have defined the demand or the capacity structure yet, this is just an example of the flux
-        if(supplierEntityOpt.isPresent()){
-
+        if (supplierEntityOpt.isPresent()) {
             CustomerEntity supplierEntity = supplierEntityOpt.get();
 
             //todo put this part of the code in the ConsumerHTTP class
@@ -68,8 +73,6 @@ public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroup
             //TODO create the Actual Demand and send to the supplier
             ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
         }
-
-
     }
 
     private void validateFields(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {

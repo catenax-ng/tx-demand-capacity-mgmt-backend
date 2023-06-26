@@ -67,10 +67,10 @@ dcm-capacity-mgmt-backend:
       SECURITY_ENABLED: 'true'
 
   applicationSecret:
-    clientSecret: <path:value-added-service/data/dcm/dev/keycloak#client-secret>
+    clientSecret: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/keycloak#client-secret>
     clientId: <path:value-added-service/data/dcm/dev/keycloak#client-id>
 
 postgres:
   auth:
-    postgresPassword: <path:value-added-service/data/dcm/dev/postgresql#postgres-password>
-    password: <path:value-added-service/data/dcm/dev/postgresql#password>
+    postgresPassword: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
+    password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#password>

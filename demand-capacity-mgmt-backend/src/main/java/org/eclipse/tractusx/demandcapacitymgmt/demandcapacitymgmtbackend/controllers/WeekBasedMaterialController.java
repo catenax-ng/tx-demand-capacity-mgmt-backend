@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class WeekBasedMaterialController implements WeekBasedMaterialDemandApi {
@@ -16,7 +18,7 @@ public class WeekBasedMaterialController implements WeekBasedMaterialDemandApi {
 
     @Override
     public ResponseEntity<Void> postWeekBasedMaterialDemand(
-        WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto
+            List<WeekBasedMaterialDemandRequestDto> weekBasedMaterialDemandRequestDto
     ) {
         weekBasedMaterialService.createWeekBasedMaterial(weekBasedMaterialDemandRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
