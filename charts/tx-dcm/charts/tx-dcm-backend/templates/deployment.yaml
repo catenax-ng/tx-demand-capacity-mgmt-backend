@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "charts.fullname" . }}
+  name: {{ include "tx-dcm-backend.fullname" . }}
   labels:
-    {{- include "charts.labels" . | nindent 4 }}
+    {{- include "tx-dcm-backend.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "charts.selectorLabels" . | nindent 6 }}
+      {{- include "tx-dcm-backend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,12 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "charts.selectorLabels" . | nindent 8 }}
+        {{- include "tx-dcm-backend.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "charts.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,6 +32,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DCM_DATASOURCE_HOST
+              value: {{ .Values.postgres.env.service_name }}
+            - name: DCM_DATASOURCE_NAME
+              value: {{ .Values.postgres.auth.database }}
+            - name: DCM_DATASOURCE_USER
+              value: {{ .Values.postgres.auth.username }}
+            - name: DCM_DATASOURCE_PASS
+              value: {{ .Values.postgres.auth.password }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

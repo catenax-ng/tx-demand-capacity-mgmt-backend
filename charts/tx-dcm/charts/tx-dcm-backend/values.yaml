@@ -28,6 +28,7 @@ image:
   registry: "ghcr.io"
   # -- Name of the docker image
   name: "catenax-ng/tx-demand-capacity-mgmt-backend"
+
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -37,7 +38,7 @@ certificate:
   host: "localhost"
 
 # -- Name of the backend service
-appName: tx-demand-capacity-mgmt-backend
+appName: tx-dcm-capacity-mgmt-backend
 
 # -- List of secrets to be used
 imagePullSecrets: []
@@ -160,8 +161,6 @@ configmap:
   # Specifies whether a configmap should be created
   create: true
   data:
-    # -- Which profile should be activated for the application
-    spring_profiles_active: 'dev'
     # -- Security configurations for the application
     security_enabled: 'false'
 
@@ -176,11 +175,12 @@ elastic:
 
 postgres:
   enabled: true
+  env:
+    service_name: "postgres"
   auth:
     database: dcm
     username: dcm
-    password: ""
-
+    password: "dcm"
 
 pgadmin4:
   # -- Should pgadmin4 be enabled or not

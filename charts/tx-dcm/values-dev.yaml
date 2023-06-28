@@ -17,35 +17,12 @@
 # SPDX-License-Identifier: Apache-2.0
 ###############################################################
 
-#dcm-capacity-mgmt-front:
-#
-#  springProfiles:
-#    - dev
-#
-#  appName: tx-demand-capacity-mgmt-backend
-#  environment: dev
-#
-#  image:
-#    pullPolicy: Always
-#    # Overrides the image tag whose default is the chart appVersion.
-#    tag: "dev"
-#
-#  ingress:
-#    host: catenax-dcm-capacity-mgmt.demo.catena-x.net
-#    enabled: true
-#
-#  certificate:
-#    host: "catenax-dcm-capacity-mgmt.demo.catena-x.net"
-#
-#  configmap:
-#    # Specifies whether a configmap should be created or not
-
-dcm-capacity-mgmt-backend:
+tx-dcm-backend:
 
   springProfiles:
     - dev
 
-  appName: dcm-capacity-mgmt-backend
+  appName: tx-demand-capacity-mgmt-backend
   environment: dev
 
   image:
@@ -66,11 +43,7 @@ dcm-capacity-mgmt-backend:
       spring_profiles_active: dev
       SECURITY_ENABLED: 'true'
 
-  applicationSecret:
-    clientSecret: <path:value-added-service/data/dcm/dev/keycloak#client-secret>
-    clientId: <path:value-added-service/data/dcm/dev/keycloak#client-id>
-
 postgres:
   auth:
-    postgresPassword: <path:value-added-service/data/dcm/dev/postgresql#postgres-password>
-    password: <path:value-added-service/data/dcm/dev/postgresql#password>
+    postgresPassword: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
+    password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#password>
