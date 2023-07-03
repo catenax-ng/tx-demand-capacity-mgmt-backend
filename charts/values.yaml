@@ -21,3 +21,7 @@
 # Default values for vas.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+dcm-backend:
+  image:
+   # -- Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"

@@ -29,6 +29,7 @@ image:
   # -- Name of the docker image
   name: "catenax-ng/tx-demand-capacity-mgmt-backend"
 
+
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -50,9 +51,6 @@ podSecurityContext:
   # -- Set the file system group ID for all containers in the pod
   fsGroup: 2000
 
-#Spring profiles under which the application should run
-springProfiles:
-  - dev
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
