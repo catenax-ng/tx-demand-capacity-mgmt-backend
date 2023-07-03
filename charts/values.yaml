@@ -25,3 +25,5 @@ dcm-backend:
   image:
    # -- Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
+  postgres:
+    enable: true
