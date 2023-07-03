@@ -1,14 +1,12 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.WeekBasedMaterialDemandRequestDto;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.SupplierEntity;
@@ -34,42 +32,45 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
 
     private final SupplierRepository supplierRepository;
 
-
     @Override
-    public void createWeekBasedMaterial(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
-        validateFields(weekBasedMaterialDemandRequestDto);
-        WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(weekBasedMaterialDemandRequestDto);
-        weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
-
-        List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.findAll();
+    public void createWeekBasedMaterial(List<WeekBasedMaterialDemandRequestDto> weekBasedMaterialDemandRequestDtoList) {
+        weekBasedMaterialDemandRequestDtoList.forEach(
+            weekBasedMaterialDemandRequestDto -> {
+                validateFields(weekBasedMaterialDemandRequestDto);
+                WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(
+                    weekBasedMaterialDemandRequestDto
+                );
+                weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
+            }
+        );
     }
 
     @Override
     public void sendWeekBasedMaterial() {
-        
         Optional<SupplierEntity> supplierEntityOpt = supplierRepository.findById(1l);
 
-        if(supplierEntityOpt.isPresent()){
+        if (supplierEntityOpt.isPresent()) {
             SupplierEntity supplierEntity = supplierEntityOpt.get();
             RestTemplate restTemplate = new RestTemplate();
             String fooResourceUrl = supplierEntity.getEdcUrl();
-            
+
             //TODO create the Actual Demand and send to the supplier
             ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
         }
-
     }
 
     @Override
     public void receiveWeekBasedMaterial() {
-
-        List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.getAllByViewed(false);
+        List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.getAllByViewed(
+            false
+        );
 
         //todo define if we are going to send email or notification when we have new requestMaterials
-        weekBasedMaterialDemandEntities.forEach(weekBasedMaterialDemandEntity -> weekBasedMaterialDemandEntity.setViewed(true));
+        weekBasedMaterialDemandEntities.forEach(
+            weekBasedMaterialDemandEntity -> weekBasedMaterialDemandEntity.setViewed(true)
+        );
 
-       weekBasedMaterialDemandRepository.saveAll(weekBasedMaterialDemandEntities);
-
+        weekBasedMaterialDemandRepository.saveAll(weekBasedMaterialDemandEntities);
     }
 
     private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
