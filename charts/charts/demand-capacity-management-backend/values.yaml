@@ -181,11 +181,3 @@ postgres:
     database: dcm
     username: dcm
     password: "dcm"
-
-pgadmin4:
-  # -- Should pgadmin4 be enabled or not
-  enabled: false
-  env:
-    # -- Email used on the Env environment
-    email: ""
-    password: ""

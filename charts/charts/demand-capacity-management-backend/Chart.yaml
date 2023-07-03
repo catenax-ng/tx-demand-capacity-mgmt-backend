@@ -20,7 +20,7 @@
 
 
 apiVersion: v2
-name: tx-dcm-backend
+name: demand-capacity-management-backend
 description: A Helm chart for Kubernetes to deploy tx-dcm-backend
 
 type: application
