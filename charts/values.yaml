@@ -35,4 +35,4 @@ dcm-backend:
       password: "dcm"
 
 postgres:
-  enable: true
+  enabled: true
