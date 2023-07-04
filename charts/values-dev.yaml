@@ -24,11 +24,11 @@ dcm-backend:
   image:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "dev"
+    tag: "latest"
 
   ingress:
-    enabled: true
-    host: catenax-dcm-capacity-mgmt.dev.demo.catena-x.net
+    enabled: false
+#    host: catenax-dcm-capacity-mgmt.dev.demo.catena-x.net
 
   certificate:
     host: "dcm-capacity-mgmt-backend.dev.demo.catena-x.net"
