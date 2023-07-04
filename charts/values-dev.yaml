@@ -38,10 +38,6 @@ dcm-backend:
     data:
       SECURITY_ENABLED: 'true'
 
-  applicationSecret:
-    clientSecret: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/keycloak#client-secret>
-    clientId: <path:value-added-service/data/dcm/dev/keycloak#client-id>
-
   postgres:
     auth:
       postgresPassword: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
