@@ -62,6 +62,6 @@ Create the name of the service account to use
 {{- end }}
 
 
-{{- define "tx-dcm-backend.postgres.name" -}}
+{{- define "dcm-backend.postgres.name" -}}
 {{- printf "%s-postgres" .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
