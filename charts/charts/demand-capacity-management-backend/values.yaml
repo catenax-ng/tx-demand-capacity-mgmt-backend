@@ -175,7 +175,6 @@ postgres:
   enabled: true
   env:
     service_name: "postgres"
-
   auth:
     database: dcm
     username: dcm
