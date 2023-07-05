@@ -329,7 +329,9 @@ components:
         customerLocationId:
           type: string
         expectedSupplierLocationId:
-          type: string
+          type: array
+          items:
+            type: string
         demandCategoryId:
           type: string
         demandSeriesValues:
@@ -399,7 +401,9 @@ components:
         customerLocation:
           $ref: '#/components/schemas/CompanyDto'
         expectedSupplierLocation:
-          $ref: '#/components/schemas/CompanyDto'
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDto'
         demandCategory:
           $ref: '#/components/schemas/DemandCategoryResponse'
 

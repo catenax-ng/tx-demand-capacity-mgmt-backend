@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.converters.ListToStringConverter;
 
 @Entity
 @Table(name = "demand_series")
@@ -34,9 +36,9 @@ public class DemandSeries {
     @JoinColumn(name = "customer_location_id", referencedColumnName = "ID")
     private CompanyEntity customerLocation;
 
-    @OneToOne
-    @JoinColumn(name = "expected_supplier_location_id", referencedColumnName = "ID")
-    private CompanyEntity expectedSupplierLocation;
+    @Column(name = "expected_supplier_location_id")
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> expectedSupplierLocation;
 
     @ManyToOne(cascade = { CascadeType.ALL })
     @JoinColumn(name = "material_demand_id", referencedColumnName = "ID")

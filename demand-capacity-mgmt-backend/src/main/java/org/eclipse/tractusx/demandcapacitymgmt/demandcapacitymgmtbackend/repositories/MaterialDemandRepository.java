@@ -6,4 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MaterialDemandEntityRepository extends JpaRepository<MaterialDemandEntity, UUID> {}
+public interface MaterialDemandRepository extends JpaRepository<MaterialDemandEntity, UUID> {}

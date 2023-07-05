@@ -4,16 +4,17 @@ import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestDt
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestUpdateDto;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandResponseDto;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.MaterialDemandRequest;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.MaterialDemandResponse;
 import java.util.List;
 
 public interface DemandService {
-    DemandResponseDto createDemand(MaterialDemandRequest materialDemandRequest);
+    MaterialDemandResponse createDemand(MaterialDemandRequest materialDemandRequest);
 
-    List<DemandResponseDto> getAllDemandsByProjectId(Long projectId);
+    List<MaterialDemandResponse> getAllDemandsByProjectId();
 
-    DemandResponseDto getDemandById(Long demandId);
+    MaterialDemandResponse getDemandById(String demandId);
 
-    DemandResponseDto updateDemand(Long demandId, DemandRequestUpdateDto demandRequestUpdateDto);
+    MaterialDemandResponse updateDemand(String demandId, DemandRequestUpdateDto demandRequestUpdateDto);
 
-    void deleteDemandById(Long demandId);
+    void deleteDemandById(String demandId);
 }

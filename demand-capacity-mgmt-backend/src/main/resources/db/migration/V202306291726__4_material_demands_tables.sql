@@ -44,7 +44,7 @@ create table demand_series
     id uuid DEFAULT uuid_generate_v4() primary key,
     material_demand_id uuid constraint material_demand_id references material_demand(id),
     customer_location_id uuid constraint customer_location_id references company_base_data(id),
-    expected_supplier_location_id uuid constraint expected_supplier_location_id references company_base_data(id),
+    expected_supplier_location_id varchar(720),
     demand_category_code_id uuid constraint demand_category_code_id references demand_category(id)
 );
 

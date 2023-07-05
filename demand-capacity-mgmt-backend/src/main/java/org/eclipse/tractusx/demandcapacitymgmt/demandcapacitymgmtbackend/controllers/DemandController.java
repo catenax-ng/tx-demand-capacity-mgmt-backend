@@ -20,35 +20,27 @@ public class DemandController implements DemandApi {
     private final DemandService demandService;
 
     @Override
-    public ResponseEntity<Void> deleteDemandsById(String demandId) throws Exception {
-        demandService.deleteDemandById(Long.parseLong(demandId));
+    public ResponseEntity<Void> deleteDemandsById(String demandId) {
+        demandService.deleteDemandById(demandId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
     public ResponseEntity<MaterialDemandResponse> getDemandsById(String demandId) {
-        DemandResponseDto responseDto = demandService.getDemandById(Long.parseLong(demandId));
-        //return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-        return null;
+        MaterialDemandResponse responseDto = demandService.getDemandById(demandId);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @Override
     public ResponseEntity<List<MaterialDemandResponse>> getDemandsByProjectID() {
-        //return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-        return null;
-    }
-
-    public ResponseEntity<List<DemandResponseDto>> getDemandsByProjectID(String projectId) {
-        List<DemandResponseDto> demandResponseDtos = demandService.getAllDemandsByProjectId(Long.parseLong(projectId));
+        List<MaterialDemandResponse> demandResponseDtos = demandService.getAllDemandsByProjectId();
         return ResponseEntity.status(HttpStatus.OK).body(demandResponseDtos);
     }
 
     @Override
-    public ResponseEntity<MaterialDemandResponse> postDemand(MaterialDemandRequest materialDemandRequest)
-        throws Exception {
-        DemandResponseDto responseDto = demandService.createDemand(materialDemandRequest);
-        //return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-        return null;
+    public ResponseEntity<MaterialDemandResponse> postDemand(MaterialDemandRequest materialDemandRequest) {
+        MaterialDemandResponse responseDto = demandService.createDemand(materialDemandRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @Override
@@ -56,8 +48,7 @@ public class DemandController implements DemandApi {
         String demandId,
         DemandRequestUpdateDto demandRequestUpdateDto
     ) {
-        DemandResponseDto responseDto = demandService.updateDemand(Long.parseLong(demandId), demandRequestUpdateDto);
-        //return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-        return null;
+        MaterialDemandResponse responseDto = demandService.updateDemand(demandId, demandRequestUpdateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }
