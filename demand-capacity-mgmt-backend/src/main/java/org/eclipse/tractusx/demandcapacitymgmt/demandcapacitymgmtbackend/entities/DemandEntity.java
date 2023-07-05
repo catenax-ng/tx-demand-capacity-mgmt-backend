@@ -21,10 +21,6 @@ public class DemandEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
-    private ProjectEntity project;
-
-    @ManyToOne
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
     private CompanyEntity company;
 

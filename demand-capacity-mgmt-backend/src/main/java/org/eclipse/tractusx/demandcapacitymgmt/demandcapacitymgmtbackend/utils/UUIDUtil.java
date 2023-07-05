@@ -9,15 +9,15 @@ public class UUIDUtil {
         "^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$"
     );
 
-    public static UUID generateUUIDFromString(String UUID) {
-        return null;
+    public static UUID generateUUIDFromString(String id) {
+        UUID uuid = UUID.fromString(id);
+        return uuid;
     }
 
     public static boolean checkValidUUID(String id) {
         if (id == null) {
             return false;
         }
-
         return UUID_REGEX_PATTERN.matcher(id).matches();
     }
 }

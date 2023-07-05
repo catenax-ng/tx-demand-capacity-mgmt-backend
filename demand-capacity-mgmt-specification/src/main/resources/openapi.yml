@@ -7,61 +7,6 @@ servers:
 
 paths:
 
-  /project:
-    post:
-      tags:
-        - Project
-      summary: create a project
-      operationId: postProject
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProjectRequestDto'
-      responses:
-        200:
-          description: General greeting
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProjectResponseDto'
-    get:
-      tags:
-        - Project
-      summary: get a list of projects
-      operationId: getProjects
-
-      responses:
-        200:
-          description: General greeting
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProjectResponseDto'
-
-  /project/{project_id}:
-    get:
-      tags:
-        - Project
-      summary: get project by Id
-      operationId: getProjectById
-      parameters:
-        - in: 'path'
-          name: 'project_id'
-          schema:
-            type: string
-          required: true
-      responses:
-        200:
-          description: General greeting
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProjectResponseDto'
-
   /demand:
     post:
       tags:
@@ -73,25 +18,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DemandRequestDto'
+              $ref: '#/components/schemas/MaterialDemandRequest'
       responses:
         200:
           description: General greeting
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DemandResponseDto'
+                $ref: '#/components/schemas/MaterialDemandResponse'
     get:
       tags:
         - Demand
-      summary: get list of demand by ProjectId
+      summary: get list of MaterialsDemand
       operationId: getDemandsByProjectID
-      parameters:
-        - in: 'query'
-          name: 'project_id'
-          schema:
-            type: string
-          required: true
       responses:
         200:
           description: General greeting
@@ -100,7 +39,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DemandResponseDto'
+                  $ref: '#/components/schemas/MaterialDemandResponse'
 
   /demand/{demand_id}:
     get:
@@ -120,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DemandResponseDto'
+                $ref: '#/components/schemas/MaterialDemandResponse'
 
     put:
       tags:
@@ -145,7 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DemandResponseDto'
+                $ref: '#/components/schemas/MaterialDemandResponse'
     delete:
       tags:
         - Demand
@@ -196,34 +135,6 @@ paths:
 
 components:
   schemas:
-
-    ProjectRequestDto:
-      type: object
-      properties:
-        name:
-          type: string
-        startDate:
-          type: string
-        endDate:
-          type: string
-        noTimeProject:
-          type: boolean
-        type:
-          type: string
-          enum: [ DEMAND_CAPACITY, MATERIAL_CAPACITY ]
-
-    ProjectResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        startDate:
-          type: string
-        endDate:
-          type: string
-
     DemandRequestDto:
       type: object
       properties:
@@ -342,7 +253,6 @@ components:
         customer:
           type: string
 
-
     DemandSeriesDto:
       type: object
       properties:
@@ -393,4 +303,117 @@ components:
         materialNumberCustomer:
           type: string
         customer:
+          type: string
+
+    MaterialDemandRequest:
+      type: object
+      properties:
+        materialDescriptionCustomer:
+          type: string
+        materialNumberCustomer:
+          type: string
+        materialNumberSupplier:
+          type: string
+        customerId:
+          type: string
+        supplierId:
+          type: string
+        unitMeasureId:
+          type: string
+        materialDemandSeries:
+          $ref: '#/components/schemas/MaterialDemandSeries'
+
+    MaterialDemandSeries:
+      type: object
+      properties:
+        customerLocationId:
+          type: string
+        expectedSupplierLocationId:
+          type: string
+        demandCategoryId:
+          type: string
+        demandSeriesValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaterialDemandSeriesValue'
+
+    MaterialDemandSeriesValue:
+      type: object
+      properties:
+        calendarWeek:
+          type: object
+        demand:
+          type: number
+
+    MaterialDemandResponse:
+      type: object
+      properties:
+        materialDescriptionCustomer:
+          type: string
+        materialNumberCustomer:
+          type: string
+        materialNumberSupplier:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CompanyDto'
+        supplier:
+          $ref: '#/components/schemas/CompanyDto'
+        unitMeasureId:
+          $ref: '#/components/schemas/UnitMeasure'
+        changedAt:
+          type: string
+        demandSeries:
+          $ref: '#/components/schemas/MaterialDemandSeriesResponse'
+
+    CompanyDto:
+      type: object
+      properties:
+        bpn:
+          type: string
+        companyName:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        zipCode:
+          type: string
+        country:
+          type: string
+        myCompany:
+          type: string
+
+    UnitMeasure:
+      type: object
+      properties:
+        id:
+          type: string
+        codeValue:
+          type: string
+        displayValue:
+          type: string
+
+    MaterialDemandSeriesResponse:
+      type: object
+      properties:
+        customerLocation:
+          $ref: '#/components/schemas/CompanyDto'
+        expectedSupplierLocation:
+          $ref: '#/components/schemas/CompanyDto'
+        demandCategory:
+          $ref: '#/components/schemas/DemandCategoryResponse'
+
+        demandSeriesValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaterialDemandSeriesValue'
+
+    DemandCategoryResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        demandCategoryCode:
+          type: string
+        demandCategoryName:
           type: string

@@ -1,22 +1,29 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
-import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestDto;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandRequestUpdateDto;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandResponseDto;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.MaterialDemandRequest;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CompanyEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.DemandEntity;
-import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.ProjectEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.DemandSeries;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.DemandSeriesValues;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.MaterialDemandEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.UnitMeasureEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.BadRequestException;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.NotFoundException;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.DemandRepository;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.MaterialDemandEntityRepository;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.CompanyService;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.DemandService;
-import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.ProjectService;
-import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.DataConverterUtil;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.UnityOfMeasureService;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.UUIDUtil;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,41 +33,28 @@ public class DemandServiceImpl implements DemandService {
 
     private final DemandRepository demandRepository;
 
-    private final ProjectService projectService;
+    private final CompanyService companyService;
 
-    private final CompanyServiceImpl companyService;
+    private final UnityOfMeasureService unityOfMeasureService;
+
+    private final MaterialDemandEntityRepository materialDemandEntityRepository;
 
     @Override
-    public DemandResponseDto createDemand(DemandRequestDto demandRequestDto) {
-        ProjectEntity project = projectService.getProjectEntityById(Long.parseLong(demandRequestDto.getProjectId()));
+    public DemandResponseDto createDemand(MaterialDemandRequest materialDemandRequest) {
+        validateMaterialDemandRequestFields(materialDemandRequest);
 
-        CompanyEntity company = companyService.getCompanyById(Long.parseLong(demandRequestDto.getCompanyId()));
+        //materialDemandEntityRepository.save(materialDemandEntity);
 
-        DemandEntity demandEntity = DemandEntity
-            .builder()
-            .company(company)
-            .project(project)
-            .requiredValue(demandRequestDto.getRequiredValue().doubleValue())
-            .deliveredValue(demandRequestDto.getDeliveredValue().doubleValue())
-            .maximumValue(demandRequestDto.getMaximumValue().doubleValue())
-            .description(demandRequestDto.getDescription())
-            .demandCategory(demandRequestDto.getDemandCategory())
-            .startDate(DataConverterUtil.convertFromString(demandRequestDto.getStartDate()))
-            .endDate(DataConverterUtil.convertFromString(demandRequestDto.getEndDate()))
-            .build();
-
-        demandEntity = demandRepository.save(demandEntity);
-
-        return convertDemandResponseDto(demandEntity);
+        return convertDemandResponseDto(null);
     }
 
     @Override
     public List<DemandResponseDto> getAllDemandsByProjectId(Long projectId) {
-        ProjectEntity project = projectService.getProjectEntityById(projectId);
-
-        List<DemandEntity> demandEntityList = demandRepository.findAllByProject(project);
-
-        return demandEntityList.stream().map(this::convertDemandResponseDto).collect(Collectors.toList());
+        //todo fix this part
+        //        List<DemandEntity> demandEntityList = demandRepository.findAllByProject(null);
+        //
+        //        return demandEntityList.stream().map(this::convertDemandResponseDto).collect(Collectors.toList());
+        return null;
     }
 
     @Override
@@ -108,5 +102,52 @@ public class DemandServiceImpl implements DemandService {
         responseDto.setDeliveredValue(BigDecimal.valueOf(demandEntity.getDeliveredValue()));
 
         return responseDto;
+    }
+
+    private void validateMaterialDemandRequestFields(MaterialDemandRequest materialDemandRequest) {
+        if (!UUIDUtil.checkValidUUID(materialDemandRequest.getCustomerId())) {
+            throw new BadRequestException("not a valid ID");
+        }
+
+        if (!UUIDUtil.checkValidUUID(materialDemandRequest.getSupplierId())) {
+            throw new BadRequestException("not a valid ID");
+        }
+    }
+
+    private void convertDtoToEntity(MaterialDemandRequest materialDemandRequest) {
+        CompanyEntity supplierEntity = companyService.getCompanyById(
+            UUIDUtil.generateUUIDFromString(materialDemandRequest.getSupplierId())
+        );
+
+        CompanyEntity customerEntity = companyService.getCompanyById(
+            UUIDUtil.generateUUIDFromString(materialDemandRequest.getSupplierId())
+        );
+
+        UnitMeasureEntity unitMeasure = unityOfMeasureService.findById(
+            UUID.fromString(materialDemandRequest.getUnitMeasureId())
+        );
+
+        DemandSeriesValues demandSeriesValues = DemandSeriesValues
+            .builder()
+            .calendarWeek(LocalDateTime.now())
+            .demand(100d)
+            .build();
+
+        List<DemandSeriesValues> demandSeriesValuesList = List.of(demandSeriesValues);
+
+        DemandSeries demandSeries = DemandSeries.builder().demandSeriesValues(demandSeriesValuesList).build();
+
+        MaterialDemandEntity materialDemandEntity = MaterialDemandEntity
+            .builder()
+            .id(UUID.randomUUID())
+            .materialDescriptionCustomer(materialDemandRequest.getMaterialDescriptionCustomer())
+            .materialNumberCustomer(materialDemandRequest.getMaterialNumberCustomer())
+            .materialNumberSupplier("")
+            .customerId(customerEntity)
+            .supplierId(supplierEntity)
+            .unitMeasure(unitMeasure)
+            .demandSeries(demandSeries)
+            .changedAt(LocalDateTime.now())
+            .build();
     }
 }
