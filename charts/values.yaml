@@ -29,6 +29,7 @@ dcm-backend:
     auth:
       database: dcm
       username: dcm
+      password: ""
 
 postgres:
   enabled: true
