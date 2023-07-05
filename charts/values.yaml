@@ -29,7 +29,8 @@ dcm-backend:
     auth:
       database: dcm
       username: dcm
-      password: ""
+      postgres-password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
+      password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#password>
 
 postgres:
   enabled: true
