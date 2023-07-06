@@ -139,8 +139,8 @@ livenessProbe:
 # -- Determine when a pod is ready to start accepting requests
 readinessProbe:
   failureThreshold: 3
-  initialDelaySeconds: 60
-  periodSeconds: 10
+  initialDelaySeconds: 300
+  periodSeconds: 30
   successThreshold: 1
   timeoutSeconds: 1
   path: /management/health
