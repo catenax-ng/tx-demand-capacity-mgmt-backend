@@ -125,9 +125,9 @@ affinity:
 livenessProbe:
   failureThreshold: 3
   # -- Number of seconds to wait before performing the first liveness probe
-  initialDelaySeconds: 60
+  initialDelaySeconds: 300
   # -- Number of seconds to wait between consecutive probes
-  periodSeconds: 10
+  periodSeconds: 30
   # -- Number of consecutive successful probes before a pod is considered healthy
   successThreshold: 1
   # -- Number of seconds after which a liveness probe times out
