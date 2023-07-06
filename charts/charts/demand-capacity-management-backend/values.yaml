@@ -170,3 +170,10 @@ elastic:
     tls:
       # -- Encryption for the REST requests made to the Elastic cluster
       restEncryption: false
+postgres:
+  enabled: true
+  auth:
+    database: dcm
+    username: dcm
+    password: ""
+    postgres-password: ""

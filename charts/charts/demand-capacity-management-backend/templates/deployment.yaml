@@ -43,7 +43,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ include "dcm-backend.postgres.name" . }}
-                  key: postgres-password
+                  key: password
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
