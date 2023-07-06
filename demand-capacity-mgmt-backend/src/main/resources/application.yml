@@ -11,5 +11,9 @@ spring:
     init:
       platform: postgres
 
+management:
+  security:
+    enable:false
+
 
 #url: jdbc:oracle:thin:@//${ORACLEDB_HOST}:${ORACLEDB_PORT}/${ORACLEDB_SERVICENAME}
