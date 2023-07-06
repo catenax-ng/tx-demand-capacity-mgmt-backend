@@ -38,7 +38,7 @@ dcm-backend:
     data:
       SECURITY_ENABLED: 'true'
 
-  postgres:
-    auth:
-      postgres-password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
-      password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#password>
+postgres:
+  auth:
+    postgres-password: "dcm"
+    password: "dcm"
