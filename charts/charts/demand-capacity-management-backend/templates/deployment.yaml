@@ -50,12 +50,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /management/health
+              path: /actuator/health
               port: 8080
               scheme: HTTP
           readinessProbe:
             httpGet:
-              path: /management/health
+              path: /actuator/health
               port: 8080
               scheme: HTTP
           resources:
