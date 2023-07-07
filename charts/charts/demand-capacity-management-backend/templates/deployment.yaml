@@ -52,12 +52,12 @@ spec:
             httpGet:
               path: /management/health
               port: 8080
-              scheme: http
+              scheme: HTTP
           readinessProbe:
             httpGet:
               path: /management/health
               port: 8080
-              scheme: http
+              scheme: HTTP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
