@@ -50,15 +50,14 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: { { .Values.livenessProbe.path } }
-              port: { { .Values.livenessProbe.port } }
-              scheme: HTTP
+              path: /management/health
+              port: 8080
+              scheme: http
           readinessProbe:
             httpGet:
-              path: { { .Values.readinessProbe.path } }
-              port: { { .Values.readinessProbe.port } }
-              scheme: HTTP
-
+              path: /management/health
+              port: 8080
+              scheme: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
