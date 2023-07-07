@@ -50,25 +50,12 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: { { .Values.livenessProbe.path } }
-              port: { { .Values.livenessProbe.port } }
-              scheme: HTTP
-            initialDelaySeconds: { { .Values.livenessProbe.initialDelaySeconds } }
-            periodSeconds: { { .Values.livenessProbe.periodSeconds } }
-            timeoutSeconds: { { .Values.livenessProbe.timeoutSeconds } }
-            successThreshold: { { .Values.livenessProbe.successThreshold } }
-            failureThreshold: { { .Values.livenessProbe.failureThreshold } }
+              path: /
+              port: http
           readinessProbe:
             httpGet:
-              path: { { .Values.readinessProbe.path } }
-              port: { { .Values.readinessProbe.port } }
-              scheme: HTTP
-            initialDelaySeconds: { { .Values.readinessProbe.initialDelaySeconds } }
-            periodSeconds: { { .Values.readinessProbe.periodSeconds } }
-            timeoutSeconds: { { .Values.readinessProbe.timeoutSeconds } }
-            successThreshold: { { .Values.readinessProbe.successThreshold } }
-            failureThreshold: { { .Values.readinessProbe.failureThreshold } }
-            
+              path: /
+              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
