@@ -100,6 +100,20 @@ paths:
         200:
           description: Delete demand with id
 
+  /capacityGroup:
+    get:
+      tags:
+        - capacityGroup
+      summary: capacityGroup
+      operationId: getCapacityGroup
+      responses:
+        200:
+          description: CapacityGroupResponse
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaterialDemandResponse'
+
 
   /weekbasedcapacitygroup:
     post:
@@ -420,4 +434,54 @@ components:
         demandCategoryCode:
           type: string
         demandCategoryName:
+          type: string
+
+    CapacityResponse:
+      type: object
+      properties:
+        actualCapacity:
+          type: number
+        MaximumCapacity:
+          type: number
+        calendarWeek:
+          type: string
+
+    LinkedDemandSeriesResponse:
+      type: object
+      properties:
+        demandCategory:
+          $ref: '#/components/schemas/DemandCategoryResponse'
+        customerLocation:
+          $ref: '#/components/schemas/CompanyDto'
+        materialNumberSupplier:
+          type: string
+        materialNumberCustomer:
+          type: string
+
+    CapacityGroupResponse:
+      type: object
+      properties:
+        capacities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacityResponse'
+        supplierLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDto'
+        customer:
+          $ref: '#/components/schemas/CompanyDto'
+        supplier:
+          $ref: '#/components/schemas/CompanyDto'
+        capacityGroupId:
+          type: string
+        linkedDemandSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkedDemandSeriesResponse'
+        unitOfMeasure:
+          $ref: '#/components/schemas/UnitMeasure'
+        changeAt:
+          type: string
+        name:
           type: string
