@@ -33,9 +33,5 @@ dependencies:
     alias: dcm-backend
     version: 0.1.0
 
-  - name: demand-capacity-management-frontend
-    alias: dcm-frontend
-    version: 0.1.0
-
 
 
