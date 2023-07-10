@@ -38,6 +38,22 @@ dcm-backend:
     data:
       SECURITY_ENABLED: 'true'
 
+dcm-frontend:
+  environment: dev
+
+  image:
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+  certificate:
+    host: "dcm-capacity-mgmt-frontend.dev.demo.catena-x.net"
+
+  configmap:
+    # Specifies whether a configmap should be created or not
+    data:
+      SECURITY_ENABLED: 'true'
+
 postgres:
   auth:
     postgres-password: "dcm"
