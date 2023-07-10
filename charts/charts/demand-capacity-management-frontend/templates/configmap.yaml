@@ -18,12 +18,11 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
-apiVersion: v2
-name: demand-capacity-management-frontend
-description: A Helm chart for Kubernetes
-
-type: application
-
-version: 0.1.0
-
-appVersion: "1.16.0"
+  {{ if .Values.configmap.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-frontend
+data:
+  {{- toYaml .Values.configmap.data | nindent 2 }}
+  {{ end }}
