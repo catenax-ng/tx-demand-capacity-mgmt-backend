@@ -41,7 +41,7 @@ public class DemandSeriesValues {
     @Column(columnDefinition = "uuid", updatable = false, name = "id")
     private UUID id;
 
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "demand_series_id", referencedColumnName = "ID")
     private DemandSeries demandSeries;
 

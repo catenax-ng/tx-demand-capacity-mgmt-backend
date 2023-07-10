@@ -20,60 +20,68 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-name: Veracode Static Analysis Pipeline Scan
+name: "Veracode upload and scan"
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "main", "develop"]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-permissions:
-  contents: read
+    branches:
+      - main
+      - dev
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+      - 'Dockerfile'
+  schedule:
+    # Once a day
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
-  # This workflow contains a job to build and submit pipeline scan, you will need to customize the build process accordingly and make sure the artifact you build is used as the file input to the pipeline scan file parameter
-  build-and-pipeline-scan:
+  Analyze:
+    runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: read
       security-events: write
-    runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - uses: actions/checkout@v3
+      #Setup Java 11
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          repository: ''
+          java-version: '17'
+          distribution: 'adopt'
 
-      - uses: actions/setup-java@v3
+      #Create/Get Maven package cache
+      - name: Cache Maven packages
+        uses: actions/cache@v1
         with:
-          java-version: 17
-          distribution: 'temurin'
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-      - name: build
-        run: |
-          cd demand-capacity-mgmt-backend
-          mvn dependency:purge-local-repository clean verify
+      #Package application with Maven
+      - name: Package to JAR
+        run: mvn -B package -DskipTests
 
-      - run: zip -r veracode-scan-target.zip ./
+      #Create the directory which will be uploaded to Veracode
+      - name: Create Veracode Upload Directory
+        run: mkdir -p target/veracode
 
-      # download the Veracode Static Analysis Pipeline scan jar
-      - run: curl --silent --show-error --fail -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
-      - run: unzip -o pipeline-scan-LATEST.zip
+      #Copy the jar to directory which gets uploaded to Veracode
+      - name: Copy Pool JAR
+        run: cp target/value-added-service-*.jar target/veracode/value-added-service.jar
 
-      - uses: actions/setup-java@v3
+      - name: Run Veracode Upload And Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.1
         with:
-          java-version: 17
-          distribution: 'temurin'
-      - run: java -Dpipeline.debug=true -jar pipeline-scan.jar -p "Product-Passport-Consumer-App" --veracode_api_id "${{ secrets.VERACODE_API_ID || secrets.ORG_VERACODE_API_ID }}" --veracode_api_key "${{ secrets.VERACODE_API_KEY || secrets.ORG_VERACODE_API_KEY }}" --fail_on_severity="Very High, High" --file veracode-scan-target.zip
-        continue-on-error: true
-      - name: Convert pipeline scan output to SARIF format
-        id: convert
-        uses: veracode/veracode-pipeline-scan-results-to-sarif@ff08ae5b45d5384cb4679932f184c013d34da9be
-        with:
-          pipeline-results-json: results.json
-      - uses: github/codeql-action/upload-sarif@v2
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: veracode-results.sarif
+          # Specify Veracode application name
+          appname: "demand-capacity-mgmt-backend"
+          createprofile: false
+          # Specify path to upload
+          filepath: "target/veracode"
+          vid: "${{ secrets.VERACODE_API_ID }}"
+          vkey: "${{ secrets.VERACODE_API_KEY }}"

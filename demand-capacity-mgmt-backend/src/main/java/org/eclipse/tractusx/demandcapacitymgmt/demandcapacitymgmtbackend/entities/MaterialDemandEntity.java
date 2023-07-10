@@ -67,6 +67,6 @@ public class MaterialDemandEntity {
     private UnitMeasureEntity unitMeasure;
 
     @OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id" ,  referencedColumnName = "id")
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private DemandSeries demandSeries;
 }

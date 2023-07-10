@@ -54,7 +54,7 @@ public class DemandSeries {
     @Convert(converter = ListToStringConverter.class)
     private List<String> expectedSupplierLocation;
 
-    @ManyToOne(cascade = { CascadeType.ALL },  fetch = FetchType.LAZY)
+    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinColumn(name = "material_demand_id", referencedColumnName = "ID")
     private MaterialDemandEntity materialDemandEntity;
 
