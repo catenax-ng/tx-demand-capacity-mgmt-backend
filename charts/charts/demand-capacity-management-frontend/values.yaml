@@ -25,12 +25,9 @@ replicaCount: 1
 
 image:
   registry: "ghcr.io"
-  # -- Name of the docker image
-  name: "catenax-ng/tx-demand-capacity-mgmt-backend"
-
-
-  pullPolicy: Always
-  # -- Overrides the image tag whose default is the chart appVersion.
+  name: "catenax-ng/tx-demand-capacity-mgmt-frontend"
+  pullPolicy: always
+  # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 certificate:
@@ -38,7 +35,7 @@ certificate:
   host: "localhost"
 
 # -- Name of the backend service
-appName: tx-dcm-capacity-mgmt-backend
+appName: tx-demand-capacity-mgmt-frontend
 
 # -- List of secrets to be used
 imagePullSecrets: []
@@ -59,7 +56,7 @@ securityContext:
   # -- Specifies whether the process inside the container should run as a non-root user
   runAsNonRoot: true
   # -- Specifies the user ID that the process inside the container should run
-  runAsUser: 10001
+  runAsUser: 101
   # -- Specifies the group ID that the process inside the container should run
   runAsGroup: 3000
   # -- Capabilities that the process inside the container should have
@@ -78,12 +75,14 @@ service:
 autoscaling:
   enabled: false
 
+
 ingress:
-  # -- Class name
-  className: ""
   # -- Ingress enabled or not
   enabled: false
+  # -- Class name
+  className:
   annotations: {}
+
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-resource-requests-and-limits
@@ -124,42 +123,29 @@ affinity:
 livenessProbe:
   failureThreshold: 3
   # -- Number of seconds to wait before performing the first liveness probe
-  initialDelaySeconds: 300
+  initialDelaySeconds: 10
   # -- Number of seconds to wait between consecutive probes
-  periodSeconds: 30
+  periodSeconds: 1000
   # -- Number of consecutive successful probes before a pod is considered healthy
   successThreshold: 1
   # -- Number of seconds after which a liveness probe times out
-  timeoutSeconds: 1
-  # -- HTTP endpoint
-  path: /actuator/health
-  # -- Port used
-  port: 8080
+  timeoutSeconds: 1000
 # -- Determine when a pod is ready to start accepting requests
 readinessProbe:
   failureThreshold: 3
-  initialDelaySeconds: 300
-  periodSeconds: 30
+  initialDelaySeconds: 10
+  periodSeconds: 1000
   successThreshold: 1
-  timeoutSeconds: 1
-  path: /actuator/health
-  port: 8080
+  timeoutSeconds: 1000
 
 # -- Defines the client secret and client ID
 applicationSecret:
-  # -- Value that specifies whether the application secret should be used
-  enabled: true
-  # -- String value that represents the client secret
-  clientSecret: "" #
-  # -- String value that represents the client ID
-  clientId: ""  #
+  enabled: false
 
 configmap:
   # Specifies whether a configmap should be created
   create: true
-  data:
-    # -- Security configurations for the application
-    security_enabled: 'false'
+
 
 elastic:
   # -- Should elastic be enabled or not
@@ -169,10 +155,4 @@ elastic:
     tls:
       # -- Encryption for the REST requests made to the Elastic cluster
       restEncryption: false
-postgres:
-  enabled: true
-  auth:
-    database: dcm
-    username: dcm
-    password: "dcm"
-    postgres-password: "dcm"
+
