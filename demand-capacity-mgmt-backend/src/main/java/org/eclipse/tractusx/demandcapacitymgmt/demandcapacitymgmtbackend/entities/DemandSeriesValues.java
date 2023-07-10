@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,8 +28,8 @@ public class DemandSeriesValues {
     @Column(columnDefinition = "uuid", updatable = false, name = "id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "demand_series_id")
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name = "demand_series_id", referencedColumnName = "ID")
     private DemandSeries demandSeries;
 
     @Column(name = "calendar_week", nullable = false)

@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -52,7 +53,7 @@ public class MaterialDemandEntity {
     @JoinColumn(name = "unity_of_measure_id", referencedColumnName = "ID")
     private UnitMeasureEntity unitMeasure;
 
-    @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id" ,  referencedColumnName = "id")
     private DemandSeries demandSeries;
 }

@@ -125,11 +125,11 @@ public class DemandServiceImpl implements DemandService {
             throw new BadRequestException("not a valid ID");
         }
 
-        if (UUIDUtil.checkValidUUID(materialDemandRequest.getMaterialDemandSeries().getCustomerLocationId())) {
+        if (!UUIDUtil.checkValidUUID(materialDemandRequest.getMaterialDemandSeries().getCustomerLocationId())) {
             throw new BadRequestException("not a valid ID");
         }
 
-        if (UUIDUtil.checkValidUUID(materialDemandRequest.getMaterialDemandSeries().getDemandCategoryId())) {
+        if (!UUIDUtil.checkValidUUID(materialDemandRequest.getMaterialDemandSeries().getDemandCategoryId())) {
             throw new BadRequestException("not a valid category");
         }
 
@@ -171,6 +171,9 @@ public class DemandServiceImpl implements DemandService {
     }
 
     private MaterialDemandEntity convertDtoToEntity(MaterialDemandRequest materialDemandRequest) {
+        UUID materialDemandId = UUID.randomUUID();
+        UUID demandSeriesId = UUID.randomUUID();
+
         CompanyEntity supplierEntity = companyService.getCompanyById(
             UUIDUtil.generateUUIDFromString(materialDemandRequest.getSupplierId())
         );
@@ -195,7 +198,6 @@ public class DemandServiceImpl implements DemandService {
 
         return MaterialDemandEntity
             .builder()
-            .id(UUID.randomUUID())
             .materialDescriptionCustomer(materialDemandRequest.getMaterialDescriptionCustomer())
             .materialNumberCustomer(materialDemandRequest.getMaterialNumberCustomer())
             .materialNumberSupplier("")

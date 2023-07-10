@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -40,7 +41,7 @@ public class DemandSeries {
     @Convert(converter = ListToStringConverter.class)
     private List<String> expectedSupplierLocation;
 
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType.ALL },  fetch = FetchType.LAZY)
     @JoinColumn(name = "material_demand_id", referencedColumnName = "ID")
     private MaterialDemandEntity materialDemandEntity;
 
@@ -48,6 +49,6 @@ public class DemandSeries {
     @JoinColumn(name = "demand_category_code_id", referencedColumnName = "ID")
     private DemandCategoryEntity demandCategory;
 
-    @OneToMany(mappedBy = "demandSeries", cascade = { CascadeType.ALL })
+    @OneToMany(mappedBy = "demandSeries", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     private List<DemandSeriesValues> demandSeriesValues;
 }

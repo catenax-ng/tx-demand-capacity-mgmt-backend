@@ -357,7 +357,7 @@ components:
       type: object
       properties:
         calendarWeek:
-          type: object
+          type: string
         demand:
           type: number
 
