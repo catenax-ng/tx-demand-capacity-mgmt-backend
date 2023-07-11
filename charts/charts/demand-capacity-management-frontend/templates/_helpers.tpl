@@ -50,13 +50,3 @@ app.kubernetes.io/name: {{ include "demand-capacity-management-frontend.name" . 
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "demand-capacity-management-frontend.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "demand-capacity-management-frontend.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
