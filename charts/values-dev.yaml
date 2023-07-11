@@ -54,6 +54,10 @@ dcm-frontend:
     data:
       SECURITY_ENABLED: 'true'
 
+  ingress:
+    enabled: true
+    host: dcm-capacity-mgmt-frontend.dev.demo.catena-x.net
+
 postgres:
   auth:
     postgres-password: "dcm"
