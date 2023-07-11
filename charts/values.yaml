@@ -31,6 +31,10 @@ dcm-frontend:
     # -- Overrides the image tag whose default is the chart appVersion.
     tag: "latest"
 
+  ingress:
+    enabled: false
+    #host: "dcm-capacity-mgmt-frontend.dev.demo.catena-x.net"
+
 postgres:
   enabled: true
   auth:
