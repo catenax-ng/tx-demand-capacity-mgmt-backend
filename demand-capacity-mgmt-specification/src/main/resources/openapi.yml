@@ -112,7 +112,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MaterialDemandResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/CapacityGroupDefaultViewResponse'
+
+    post:
+      tags:
+        - capacityGroup
+      summary: create capacityGroup
+      operationId: postCapacityGroup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapacityGroupRequest'
+      responses:
+        200:
+          description: General greeting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapacityGroupResponse'
 
 
   /weekbasedcapacitygroup:
@@ -485,3 +506,58 @@ components:
           type: string
         name:
           type: string
+
+    CapacityGroupDefaultViewResponse:
+      type: object
+      properties:
+        internalId:
+          type: string
+        catXUuid:
+          type: string
+        name:
+          type: string
+        customerBPNL:
+          type: string
+        customerName:
+          type: string
+        supplierBNPL:
+          type: string
+        numberOfMaterials:
+          type: number
+        favoritedBy:
+          type: string
+        status:
+          type: string
+
+
+    CapacityGroupRequest:
+      type: object
+      properties:
+        capacities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacityResponse'
+        supplierLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDto'
+        customer:
+          $ref: '#/components/schemas/CompanyDto'
+        supplier:
+          $ref: '#/components/schemas/CompanyDto'
+        capacityGroupId:
+          type: string
+        linkedDemandSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkedDemandSeriesResponse'
+        unitOfMeasure:
+          $ref: '#/components/schemas/UnitMeasure'
+        changeAt:
+          type: string
+        name:
+          type: string
+
+
+
+
