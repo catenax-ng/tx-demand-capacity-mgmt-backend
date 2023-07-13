@@ -112,7 +112,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MaterialDemandResponse'
+                $ref: '#/components/schemas/CapacityGroupResponse'
+
+  
 
 
   /weekbasedcapacitygroup:
