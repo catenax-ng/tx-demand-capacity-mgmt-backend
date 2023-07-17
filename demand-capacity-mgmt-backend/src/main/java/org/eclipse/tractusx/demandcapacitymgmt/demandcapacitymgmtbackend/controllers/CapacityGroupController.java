@@ -30,6 +30,7 @@ public class CapacityGroupController implements CapacityGroupApi {
     @Override
     public ResponseEntity<List<CapacityGroupDefaultViewResponse>> getCapacityGroup() throws Exception {
         return null;
+        
     }
 
     @Override
