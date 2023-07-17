@@ -37,3 +37,5 @@ target/
 .DS_Store
 
 .idea/*
+
+demand-capacity-mgmt-backend/.mvn/wrapper/maven-wrapper.jar
