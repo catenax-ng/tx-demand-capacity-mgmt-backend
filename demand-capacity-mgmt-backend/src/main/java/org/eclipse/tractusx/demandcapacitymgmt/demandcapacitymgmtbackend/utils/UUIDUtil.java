@@ -23,6 +23,7 @@ public class UUIDUtil {
     );
 
     public static UUID generateUUIDFromString(String id) {
+        checkValidUUID(id);
         UUID uuid = UUID.fromString(id);
         return uuid;
     }

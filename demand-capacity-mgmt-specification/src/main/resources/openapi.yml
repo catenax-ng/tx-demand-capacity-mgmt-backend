@@ -529,7 +529,6 @@ components:
         status:
           type: string
 
-
     CapacityGroupRequest:
       type: object
       properties:
@@ -540,19 +539,17 @@ components:
         supplierLocations:
           type: array
           items:
-            $ref: '#/components/schemas/CompanyDto'
+            type: string
         customer:
-          $ref: '#/components/schemas/CompanyDto'
+          type: string
         supplier:
-          $ref: '#/components/schemas/CompanyDto'
-        capacityGroupId:
           type: string
         linkedDemandSeries:
           type: array
           items:
-            $ref: '#/components/schemas/LinkedDemandSeriesResponse'
+            type: string
         unitOfMeasure:
-          $ref: '#/components/schemas/UnitMeasure'
+          type: string
         changeAt:
           type: string
         name:

@@ -50,6 +50,9 @@ public class CapacityTimeSeries {
     @Column(name = "maximum_capacity", nullable = false)
     private Double maximumCapacity;
 
+    @Column(name = "required_amount", nullable = false)
+    private Double requiredAmount;
+
     @ManyToOne
     @JoinColumn(name = "capacity_group_id")
     private CapacityGroupEntity capacityGroupEntity;
