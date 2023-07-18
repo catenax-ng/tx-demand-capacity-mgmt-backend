@@ -24,13 +24,17 @@ spring:
     database: POSTGRESQL
     show-sql: true
   datasource:
-    url: jdbc:postgresql://${DCM_DATASOURCE_HOST:localhost:5432}/${DCM_DATASOURCE_NAME:mydb}
-    username: ${DCM_DATASOURCE_USER:postgres}
-    password: ${DCM_DATASOURCE_PASS:postgres}
+    url: jdbc:postgresql://${DCM_DATASOURCE_HOST:localhost:5432}/${DCM_DATASOURCE_NAME:dmc}
+    username: ${DCM_DATASOURCE_USER:dcm}
+    password: ${DCM_DATASOURCE_PASS:dcm}
     driverClassName: org.postgresql.Driver
   sql:
     init:
       platform: postgres
+
+management:
+  security:
+    enable:false
 
 
 #url: jdbc:oracle:thin:@//${ORACLEDB_HOST}:${ORACLEDB_PORT}/${ORACLEDB_SERVICENAME}

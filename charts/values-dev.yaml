@@ -20,22 +20,18 @@
 
 
 
-tx-dcm-backend:
+dcm-backend:
 
-  springProfiles:
-    - dev
-
-  appName: tx-demand-capacity-mgmt-backend
   environment: dev
 
   image:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "dev"
+    tag: "latest"
 
   ingress:
-    enabled: true
-    host: catenax-dcm-capacity-mgmt-dev.demo.catena-x.net
+    enabled: false
+#    host: catenax-dcm-capacity-mgmt.dev.demo.catena-x.net
 
   certificate:
     host: "dcm-capacity-mgmt-backend.dev.demo.catena-x.net"
@@ -43,10 +39,29 @@ tx-dcm-backend:
   configmap:
     # Specifies whether a configmap should be created or not
     data:
-      spring_profiles_active: dev
       SECURITY_ENABLED: 'true'
+
+dcm-frontend:
+  environment: dev
+
+  image:
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
+  certificate:
+    host: "dcm-capacity-mgmt-frontend.dev.demo.catena-x.net"
+
+  configmap:
+    # Specifies whether a configmap should be created or not
+    data:
+      SECURITY_ENABLED: 'true'
+
+  ingress:
+    enabled: true
+    host: dcm-capacity-mgmt-frontend.dev.demo.catena-x.net
 
 postgres:
   auth:
-    postgresPassword: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#postgres-password>
-    password: <path:cgi-dcm-foss/value-added-service/data/dcm/dev/postgresql#password>
+    postgres-password: "dcm"
+    password: "dcm"
