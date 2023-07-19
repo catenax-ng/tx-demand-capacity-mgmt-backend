@@ -15,6 +15,7 @@ package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.contro
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.api.WeekBasedMaterialDemandApi;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.WeekBasedMaterialDemandRequestDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.WeekBasedMaterialService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class WeekBasedMaterialController implements WeekBasedMaterialDemandApi {
 
     @Override
     public ResponseEntity<Void> postWeekBasedMaterialDemand(
-        WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto
+        List<WeekBasedMaterialDemandRequestDto> weekBasedMaterialDemandRequestDto
     ) {
         weekBasedMaterialService.createWeekBasedMaterial(weekBasedMaterialDemandRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();

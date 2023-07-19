@@ -2,7 +2,6 @@ package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.servic
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.CapacityGroupRequest;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +39,7 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
     public void createCapacityGroup(CapacityGroupRequest capacityGroupRequest) {
         validateRequestFields(capacityGroupRequest);
 
-        List<CapacityGroupEntity> capacityGroupEntity = enrichCapacityGroup(capacityGroupRequest);
+        CapacityGroupEntity capacityGroupEntity = enrichCapacityGroup(capacityGroupRequest);
 
         saveAll(capacityGroupEntity);
     }
@@ -73,22 +72,18 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
             throw new BadRequestException("Some Invalid Company");
         }
 
-        capacityGroupRequest.getCapacities().forEach(capacityLink -> {
+        List<LocalDateTime> dates = capacityGroupRequest
+            .getCapacities()
+            .stream()
+            .map(capacityResponse -> DataConverterUtil.convertFromString(capacityResponse.getCalendarWeek()))
+            .toList();
 
-            List<LocalDateTime> dates = capacityLink.getCapacities().stream()
-                        .map(capacityResponse -> DataConverterUtil.convertFromString(capacityResponse.getCalendarWeek()))
-                        .toList();
-
-            if (!DataConverterUtil.checkListAllMonday(dates) || !DataConverterUtil.checkDatesSequence(dates)) {
-                            throw new BadRequestException("not a valid dates");
-            }
-
-        });
-
+        if (!DataConverterUtil.checkListAllMonday(dates) || !DataConverterUtil.checkDatesSequence(dates)) {
+            throw new BadRequestException("not a valid dates");
+        }
     }
 
-    private List<CapacityGroupEntity> enrichCapacityGroup(CapacityGroupRequest capacityGroupRequest) {
-
+    private CapacityGroupEntity enrichCapacityGroup(CapacityGroupRequest capacityGroupRequest) {
         UUID capacityGroupId = UUID.randomUUID();
         UnitMeasureEntity unitMeasure = unityOfMeasureService.findById(
             UUIDUtil.generateUUIDFromString(capacityGroupRequest.getUnitOfMeasure())
@@ -102,53 +97,49 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
             UUIDUtil.generateUUIDFromString(capacityGroupRequest.getSupplier())
         );
 
-        List<CapacityGroupEntity> capacityGroupEntityList = new LinkedList<>();
-
-        capacityGroupRequest
+        List<CapacityTimeSeries> capacityTimeSeries = capacityGroupRequest
             .getCapacities()
-            .forEach(
-                capacityLink -> {
+            .stream()
+            .map(
+                capacityRequest ->
+                    enrichCapacityTimeSeries(
+                        DataConverterUtil.convertFromString(capacityRequest.getCalendarWeek()),
+                        capacityRequest.getActualCapacity().doubleValue(),
+                        capacityRequest.getMaximumCapacity().doubleValue()
+                    )
+            )
+            .toList();
+
+        List<LinkedDemandSeries> linkDemandEntityList = capacityGroupRequest
+            .getLinkedDemandSeries()
+            .stream()
+            .map(
+                s -> {
                     LinkDemandEntity linkDemandEntity = linkDemandRepository
-                        .findById(UUIDUtil.generateUUIDFromString(capacityLink.getLinkedMaterial()))
+                        .findById(UUIDUtil.generateUUIDFromString(s))
                         .orElseThrow();
 
-                    List<CapacityTimeSeries> capacityTimeSeries = capacityLink
-                        .getCapacities()
-                        .stream()
-                        .map(
-                            capacityResponse ->
-                                enrichCapacityTimeSeries(
-                                    DataConverterUtil.convertFromString(capacityResponse.getCalendarWeek()),
-                                    capacityResponse.getActualCapacity().doubleValue(),
-                                    capacityResponse.getMaximumCapacity().doubleValue()
-                                )
-                        )
-                        .toList();
-
-                    LinkedDemandSeries linkedDemandSeries = LinkedDemandSeries
+                    return LinkedDemandSeries
                         .builder()
                         .materialNumberSupplier(linkDemandEntity.getMaterialNumberSupplier())
                         .materialNumberCustomer(linkDemandEntity.getMaterialNumberCustomer())
                         .build();
-
-                    CapacityGroupEntity capacityGroupEntity = CapacityGroupEntity
-                        .builder()
-                        .id(UUID.randomUUID())
-                        .capacityGroupId(capacityGroupId)
-                        .supplierId(supplier)
-                        .customerId(customer)
-                        .unitMeasure(unitMeasure)
-                        .changedAt(LocalDateTime.now())
-                        .capacityTimeSeries(capacityTimeSeries)
-                        .linkedDemandSeries(List.of(linkedDemandSeries))
-                        .name(capacityGroupRequest.getName())
-                        .build();
-
-                    capacityGroupEntityList.add(capacityGroupEntity);
                 }
-            );
+            )
+            .toList();
 
-        return capacityGroupEntityList;
+        return CapacityGroupEntity
+            .builder()
+            .id(UUID.randomUUID())
+            .capacityGroupId(capacityGroupId)
+            .supplierId(supplier)
+            .customerId(customer)
+            .unitMeasure(unitMeasure)
+            .changedAt(LocalDateTime.now())
+            .capacityTimeSeries(capacityTimeSeries)
+            .linkedDemandSeries(linkDemandEntityList)
+            .name(capacityGroupRequest.getName())
+            .build();
     }
 
     private CapacityTimeSeries enrichCapacityTimeSeries(
@@ -165,7 +156,7 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
             .build();
     }
 
-    private void saveAll(List<CapacityGroupEntity> capacityGroupEntity) {
-        capacityGroupRepository.saveAll(capacityGroupEntity);
+    private void saveAll(CapacityGroupEntity capacityGroupEntity) {
+        capacityGroupRepository.save(capacityGroupEntity);
     }
 }

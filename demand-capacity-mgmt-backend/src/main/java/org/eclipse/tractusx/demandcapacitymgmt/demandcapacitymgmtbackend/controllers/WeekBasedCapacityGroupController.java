@@ -15,6 +15,7 @@ package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.contro
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.api.WeekBasedCapacityGroupApi;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.WeekBasedCapacityGroupRequest;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.WeekBasedCapacityGroupService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class WeekBasedCapacityGroupController implements WeekBasedCapacityGroupA
 
     @Override
     public ResponseEntity<Void> postWeekBasedCapacityGroup(
-        WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest
+        List<WeekBasedCapacityGroupRequest> weekBasedCapacityGroupRequest
     ) {
         weekBasedCapacityGroupService.createWeekBasedCapacityGroup(weekBasedCapacityGroupRequest);
         return ResponseEntity.status(HttpStatus.OK).build();

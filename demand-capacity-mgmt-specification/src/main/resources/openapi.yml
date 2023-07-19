@@ -147,7 +147,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WeekBasedCapacityGroupRequest'
+              type: array
+              items:
+                $ref: '#/components/schemas/WeekBasedCapacityGroupRequest'
       responses:
         200:
           description: weekBasedCapacityGroup endpoint
@@ -163,7 +165,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WeekBasedMaterialDemandRequestDto'
+              type: array
+              items:
+                $ref: '#/components/schemas/WeekBasedMaterialDemandRequestDto'
       responses:
         200:
           description: weekBasedCapacityGroup endpoint
@@ -545,7 +549,11 @@ components:
         capacities:
           type: array
           items:
-            $ref: '#/components/schemas/CapacityLink'
+            $ref: '#/components/schemas/CapacityRequest'
+        linkedDemandSeries:
+          type: array
+          items:
+            type: string
         supplierLocations:
           type: array
           items:

@@ -44,11 +44,15 @@ public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroup
     private final CustomerRepository customerRepository;
 
     @Override
-    public void createWeekBasedCapacityGroup(WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest) {
-        validateFields(weekBasedCapacityGroupRequest);
+    public void createWeekBasedCapacityGroup(List<WeekBasedCapacityGroupRequest> weekBasedCapacityGroupRequestList) {
+        weekBasedCapacityGroupRequestList.forEach(
+            weekBasedCapacityGroupRequest -> {
+                validateFields(weekBasedCapacityGroupRequest);
 
-        WeekBasedCapacityGroupEntity weekBasedCapacityGroup = convertEntity(weekBasedCapacityGroupRequest);
-        weekBasedCapacityGroupRepository.save(weekBasedCapacityGroup);
+                WeekBasedCapacityGroupEntity weekBasedCapacityGroup = convertEntity(weekBasedCapacityGroupRequest);
+                weekBasedCapacityGroupRepository.save(weekBasedCapacityGroup);
+            }
+        );
     }
 
     @Override

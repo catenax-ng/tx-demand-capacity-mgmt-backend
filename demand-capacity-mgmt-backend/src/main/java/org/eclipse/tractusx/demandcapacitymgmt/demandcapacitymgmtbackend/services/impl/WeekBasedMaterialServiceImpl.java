@@ -46,10 +46,16 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
     private final SupplierRepository supplierRepository;
 
     @Override
-    public void createWeekBasedMaterial(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
-        validateFields(weekBasedMaterialDemandRequestDto);
-        WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(weekBasedMaterialDemandRequestDto);
-        weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
+    public void createWeekBasedMaterial(List<WeekBasedMaterialDemandRequestDto> weekBasedMaterialDemandRequestDtoList) {
+        weekBasedMaterialDemandRequestDtoList.forEach(
+            weekBasedMaterialDemandRequestDto -> {
+                validateFields(weekBasedMaterialDemandRequestDto);
+                WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(
+                    weekBasedMaterialDemandRequestDto
+                );
+                weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
+            }
+        );
 
         List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.findAll();
     }

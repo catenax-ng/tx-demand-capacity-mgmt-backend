@@ -20,6 +20,7 @@ import eclipse.tractusx.demand_capacity_mgmt_specification.model.CapacityGroupRe
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.MaterialDemandResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.CapacityGroupService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,14 +28,19 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class CapacityGroupController implements CapacityGroupApi {
 
+    private final CapacityGroupService capacityGroupService;
     @Override
     public ResponseEntity<List<CapacityGroupDefaultViewResponse>> getCapacityGroup() throws Exception {
+
+
         return null;
     }
 
     @Override
     public ResponseEntity<CapacityGroupResponse> postCapacityGroup(CapacityGroupRequest capacityGroupRequest)
         throws Exception {
+
+        capacityGroupService.createCapacityGroup(capacityGroupRequest);
         return null;
     }
 }
