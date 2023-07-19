@@ -45,6 +45,9 @@ public class CapacityGroupEntity {
     @Column(columnDefinition = "uuid", updatable = false, name = "id")
     private UUID id;
 
+    @Column(columnDefinition = "uuid", updatable = false, name = "capacity_group_id")
+    private UUID capacityGroupId;
+
     @Column(name = "material_description_customer")
     private String materialDescriptionCustomer;
 

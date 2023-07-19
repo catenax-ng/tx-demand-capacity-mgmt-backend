@@ -22,10 +22,10 @@ create table capacity_group
     changed_at timestamp,
     customer_id uuid constraint capacity_group_customer_id references company_base_data(id),
     supplier_id uuid constraint capacity_group_supplier_id references company_base_data(id),
-    capacity_group_id uuid constraint customer_id references company_base_data(id),
+    capacity_group_id uuid,
     unity_of_measure_id uuid constraint unity_of_measure_id references unity_of_measure(id),
     supplier_locations varchar(720),
-    name varchar(400),
+    name varchar(400)
 );
 
 create table capacity_time_series
@@ -55,5 +55,5 @@ create table link_demand
     material_number_supplier varchar(400),
     demand_category_id varchar(400),
     linked boolean,
-    week_based_material_demand_id constraint week_based_material_demand_id references week_based_material_demand_id(id),
+    week_based_material_demand_id integer constraint week_based_material_demand_id references week_based_material_demand(id)
 );

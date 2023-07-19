@@ -457,7 +457,7 @@ components:
         demandCategoryName:
           type: string
 
-    CapacityResponse:
+    CapacityRequest:
       type: object
       properties:
         actualCapacity:
@@ -466,6 +466,16 @@ components:
           type: number
         calendarWeek:
           type: string
+
+    CapacityLink:
+      type: object
+      properties:
+        LinkedMaterial:
+          type: string
+        Capacities:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapacityRequest'
 
     LinkedDemandSeriesResponse:
       type: object
@@ -485,7 +495,7 @@ components:
         capacities:
           type: array
           items:
-            $ref: '#/components/schemas/CapacityResponse'
+            $ref: '#/components/schemas/CapacityRequest'
         supplierLocations:
           type: array
           items:
@@ -535,7 +545,7 @@ components:
         capacities:
           type: array
           items:
-            $ref: '#/components/schemas/CapacityResponse'
+            $ref: '#/components/schemas/CapacityLink'
         supplierLocations:
           type: array
           items:
@@ -544,10 +554,6 @@ components:
           type: string
         supplier:
           type: string
-        linkedDemandSeries:
-          type: array
-          items:
-            type: string
         unitOfMeasure:
           type: string
         changeAt:
