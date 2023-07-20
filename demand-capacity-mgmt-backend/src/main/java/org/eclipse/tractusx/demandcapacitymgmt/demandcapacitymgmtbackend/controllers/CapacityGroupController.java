@@ -29,17 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class CapacityGroupController implements CapacityGroupApi {
 
     private final CapacityGroupService capacityGroupService;
+
     @Override
     public ResponseEntity<List<CapacityGroupDefaultViewResponse>> getCapacityGroup() throws Exception {
-
-
         return null;
     }
 
     @Override
     public ResponseEntity<CapacityGroupResponse> postCapacityGroup(CapacityGroupRequest capacityGroupRequest)
         throws Exception {
-
         capacityGroupService.createCapacityGroup(capacityGroupRequest);
         return null;
     }

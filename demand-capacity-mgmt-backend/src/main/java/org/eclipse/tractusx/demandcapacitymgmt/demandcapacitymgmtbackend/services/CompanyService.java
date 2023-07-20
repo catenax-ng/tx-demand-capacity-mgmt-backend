@@ -26,4 +26,6 @@ public interface CompanyService {
     List<CompanyEntity> getCompanyIn(List<UUID> uuidList);
 
     CompanyDto convertEntityToDto(CompanyEntity companyEntity);
+
+    List<CompanyDto> getAllCompany();
 }

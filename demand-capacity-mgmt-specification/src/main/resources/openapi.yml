@@ -172,6 +172,54 @@ paths:
         200:
           description: weekBasedCapacityGroup endpoint
 
+  /company:
+    get:
+      tags:
+        - company
+      summary: company
+      operationId: getCompany
+      responses:
+        200:
+          description: CompanyResponse
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyDto'
+
+  /unitmeasure:
+    get:
+      tags:
+        - unitMeasure
+      summary: unitMeasure
+      operationId: getUnitMeasure
+      responses:
+        200:
+          description: UnitMeasureResponse
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnitMeasure'
+
+  /demandcategory:
+    get:
+      tags:
+        - demandCategory
+      summary: demandCategory
+      operationId: getDemandCategory
+      responses:
+        200:
+          description: demandCategoryResponse
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DemandCategoryResponse'
+
 components:
   schemas:
     DemandRequestDto:

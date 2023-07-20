@@ -14,9 +14,8 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.CompanyDto;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CompanyEntity;
@@ -66,5 +65,12 @@ public class CompanyServiceImpl implements CompanyService {
         companyDto.setZipCode(companyEntity.getZipCode());
 
         return companyDto;
+    }
+
+    @Override
+    public List<CompanyDto> getAllCompany() {
+        List<CompanyEntity> companyEntityList = companyRepository.findAll();
+
+        return companyEntityList.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 }

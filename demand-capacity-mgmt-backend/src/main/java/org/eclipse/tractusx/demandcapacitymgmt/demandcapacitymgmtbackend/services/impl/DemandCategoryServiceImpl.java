@@ -14,8 +14,10 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandCategoryResponse;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.DemandCategoryEntity;
@@ -50,5 +52,12 @@ public class DemandCategoryServiceImpl implements DemandCategoryService {
         demandCategoryResponse.setDemandCategoryName(demandCategory.getDemandCategoryName());
 
         return demandCategoryResponse;
+    }
+
+    @Override
+    public List<DemandCategoryResponse> getAllDemandCategory() {
+        List<DemandCategoryEntity> demandCategoryEntityList = demandCategoryRepository.findAll();
+
+        return demandCategoryEntityList.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 }
