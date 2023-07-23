@@ -29,6 +29,7 @@ import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entitie
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.BadRequestException;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.SupplierRepository;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.WeekBasedMaterialDemandRepository;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.LinkDemandService;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.WeekBasedMaterialService;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.DataConverterUtil;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils.UUIDUtil;
@@ -45,19 +46,20 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
 
     private final SupplierRepository supplierRepository;
 
+    private final LinkDemandService linkDemandService;
+
     @Override
     public void createWeekBasedMaterial(List<WeekBasedMaterialDemandRequestDto> weekBasedMaterialDemandRequestDtoList) {
         weekBasedMaterialDemandRequestDtoList.forEach(
             weekBasedMaterialDemandRequestDto -> {
                 validateFields(weekBasedMaterialDemandRequestDto);
+
                 WeekBasedMaterialDemandEntity weekBasedMaterialDemand = convertEntity(
                     weekBasedMaterialDemandRequestDto
                 );
                 weekBasedMaterialDemandRepository.save(weekBasedMaterialDemand);
             }
         );
-
-        List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities = weekBasedMaterialDemandRepository.findAll();
     }
 
     @Override
@@ -80,12 +82,14 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
             false
         );
 
+        linkDemandService.createLinkDemands(weekBasedMaterialDemandEntities);
         //todo define if we are going to send email or notification when we have new requestMaterials
-        weekBasedMaterialDemandEntities.forEach(
-            weekBasedMaterialDemandEntity -> weekBasedMaterialDemandEntity.setViewed(true)
-        );
-
-        weekBasedMaterialDemandRepository.saveAll(weekBasedMaterialDemandEntities);
+        //        weekBasedMaterialDemandEntities.forEach(
+        //
+        //            weekBasedMaterialDemandEntity -> weekBasedMaterialDemandEntity.setViewed(true)
+        //        );
+        //
+        //        weekBasedMaterialDemandRepository.saveAll(weekBasedMaterialDemandEntities);
     }
 
     private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
@@ -113,26 +117,10 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
     private WeekBasedMaterialDemandEntity convertEntity(
         WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto
     ) {
-        List<WeekDemandSeries> demandSeries = new LinkedList<>();
-        weekBasedMaterialDemandRequestDto
-            .getDemandSeries()
-            .forEach(
-                demandWeekSeriesDto -> {
-                    WeekDemandSeries weekDemandSeries = WeekDemandSeries
-                        .builder()
-                        .expectedSupplierLocation(demandWeekSeriesDto.getExpectedSupplierLocation())
-                        .build();
-                    demandSeries.add(weekDemandSeries);
-                }
-            );
-
-        WeekBasedMaterialDemand weekBasedMaterialDemand = WeekBasedMaterialDemand
+        return WeekBasedMaterialDemandEntity
             .builder()
-            .unityOfMeasure(weekBasedMaterialDemandRequestDto.getUnityOfMeasure())
-            .materialDescriptionCustomer(weekBasedMaterialDemandRequestDto.getMaterialDescriptionCustomer())
-            .demandSeries(demandSeries)
+            .weekBasedMaterialDemand(weekBasedMaterialDemandRequestDto)
+            .viewed(false)
             .build();
-
-        return WeekBasedMaterialDemandEntity.builder().weekBasedMaterialDemand(weekBasedMaterialDemand).build();
     }
 }

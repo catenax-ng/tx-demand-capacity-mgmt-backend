@@ -13,6 +13,7 @@
 
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities;
 
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.WeekBasedMaterialDemandRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -44,7 +45,7 @@ public class WeekBasedMaterialDemandEntity {
     @Convert(converter = WeekBasedMaterialConverter.class)
     @Column(name = "data", columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
-    private WeekBasedMaterialDemand weekBasedMaterialDemand;
+    private WeekBasedMaterialDemandRequestDto weekBasedMaterialDemand;
 
     @Column(name = "viewed")
     private Boolean viewed;

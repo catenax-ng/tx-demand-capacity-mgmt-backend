@@ -13,6 +13,7 @@
 
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.jsonEntities;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,5 +21,8 @@ import lombok.Data;
 @Builder
 public class WeekDemandSeries {
 
-    private String expectedSupplierLocation;
+    private List<String> expectedSupplierLocation;
+
+    private String customerLocation;
+    private String demandCategory;
 }

@@ -61,13 +61,6 @@ public class WeekBasedCapacityGroupServiceImpl implements WeekBasedCapacityGroup
             false
         );
 
-        //todo define if we are going to send email or notification when we have new requestMaterials
-        weekBasedCapacityGroupEntities.forEach(
-            weekBasedCapacityGroupEntity -> {
-                weekBasedCapacityGroupEntity.setViewed(true);
-            }
-        );
-
         weekBasedCapacityGroupRepository.saveAll(weekBasedCapacityGroupEntities);
     }
 
