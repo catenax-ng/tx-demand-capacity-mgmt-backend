@@ -4,6 +4,8 @@ import eclipse.tractusx.demand_capacity_mgmt_specification.model.CapacityGroupRe
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CapacityGroupEntity;
@@ -84,7 +86,10 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
     }
 
     private CapacityGroupEntity enrichCapacityGroup(CapacityGroupRequest capacityGroupRequest) {
+
         UUID capacityGroupId = UUID.randomUUID();
+        AtomicReference<String> materialNumberCustomer = new AtomicReference<>("");
+        AtomicReference<String> materialDescriptionCustomer = new AtomicReference<>("");
         UnitMeasureEntity unitMeasure = unityOfMeasureService.findById(
             UUIDUtil.generateUUIDFromString(capacityGroupRequest.getUnitOfMeasure())
         );
@@ -119,6 +124,13 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
                         .findById(UUIDUtil.generateUUIDFromString(s))
                         .orElseThrow();
 
+                    materialNumberCustomer.set(linkDemandEntity.getMaterialNumberCustomer());
+
+                    materialDescriptionCustomer.set(linkDemandEntity.getMaterialNumberCustomer());
+
+                    linkDemandEntity.setLinked(true);
+                    linkDemandRepository.save(linkDemandEntity);
+
                     return LinkedDemandSeries
                         .builder()
                         .materialNumberSupplier(linkDemandEntity.getMaterialNumberSupplier())
@@ -133,12 +145,15 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
             .id(UUID.randomUUID())
             .capacityGroupId(capacityGroupId)
             .supplierId(supplier)
+            .supplierLocation(capacityGroupRequest.getSupplierLocations())
             .customerId(customer)
             .unitMeasure(unitMeasure)
             .changedAt(LocalDateTime.now())
             .capacityTimeSeries(capacityTimeSeries)
             .linkedDemandSeries(linkDemandEntityList)
             .name(capacityGroupRequest.getName())
+            .materialNumberCustomer(materialNumberCustomer.get())
+            .materialDescriptionCustomer(materialDescriptionCustomer.get())
             .build();
     }
 
