@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.MaterialDemandEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.SupplierEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.WeekBasedMaterialDemandEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.BadRequestException;
@@ -79,13 +80,12 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
         );
 
         linkDemandService.createLinkDemands(weekBasedMaterialDemandEntities);
-        //todo define if we are going to send email or notification when we have new requestMaterials
-        //        weekBasedMaterialDemandEntities.forEach(
-        //
-        //            weekBasedMaterialDemandEntity -> weekBasedMaterialDemandEntity.setViewed(true)
-        //        );
-        //
-        //        weekBasedMaterialDemandRepository.saveAll(weekBasedMaterialDemandEntities);
+
+    }
+
+    @Override
+    public void createWeekBasedMaterialRequestFromEntity(MaterialDemandEntity materialDemandEntity) {
+        
     }
 
     private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
