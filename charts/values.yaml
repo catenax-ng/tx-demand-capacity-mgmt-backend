@@ -18,20 +18,27 @@
 # SPDX-License-Identifier: Apache-2.0
 ################################################################################
 
+# Default values for vas.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+dcm-backend:
+  image:
+   # -- Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
 
-apiVersion: v2
-name: tx-dcm-backend
-description: A Helm chart for Kubernetes to deploy tx-dcm-backend
+dcm-frontend:
+  image:
+    # -- Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
 
-type: application
+  ingress:
+    enabled: false
+    #host: "dcm-capacity-mgmt-frontend.dev.demo.catena-x.net"
 
-version: 0.1.0
-
-appVersion: "1.16.0"
-
-dependencies:
-  - name: postgresql
-    version: 11.*.*
-    repository: https://charts.bitnami.com/bitnami
-    alias: postgres
-    condition: postgres.enabled
+postgres:
+  enabled: true
+  auth:
+    database: dcm
+    username: dcm
+    password: "dcm"
+    postgres-password: "dcm"

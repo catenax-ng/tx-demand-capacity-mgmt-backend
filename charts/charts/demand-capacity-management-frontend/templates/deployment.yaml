@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "tx-dcm-backend.fullname" . }}
+  name: {{ include "demand-capacity-management-frontend.fullname" . }}
   labels:
-    {{- include "tx-dcm-backend.labels" . | nindent 4 }}
+    {{- include "demand-capacity-management-frontend.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "tx-dcm-backend.selectorLabels" . | nindent 6 }}
+      {{- include "demand-capacity-management-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "tx-dcm-backend.selectorLabels" . | nindent 8 }}
+        {{- include "demand-capacity-management-frontend.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -30,29 +30,12 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: DCM_DATASOURCE_HOST
-              value: {{ .Values.postgres.env.service_name }}
-            - name: DCM_DATASOURCE_NAME
-              value: {{ .Values.postgres.auth.database }}
-            - name: DCM_DATASOURCE_USER
-              value: {{ .Values.postgres.auth.username }}
-            - name: DCM_DATASOURCE_PASS
-              value: {{ .Values.postgres.auth.password }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
