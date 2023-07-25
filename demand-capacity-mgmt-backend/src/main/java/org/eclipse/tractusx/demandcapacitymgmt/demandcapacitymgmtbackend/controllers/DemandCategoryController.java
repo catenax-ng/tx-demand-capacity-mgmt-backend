@@ -21,27 +21,25 @@
  *
  */
 
-package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.utils;
+package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.controllers;
 
-import java.util.UUID;
-import java.util.regex.Pattern;
+import eclipse.tractusx.demand_capacity_mgmt_specification.api.DemandCategoryApi;
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.DemandCategoryResponse;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.DemandCategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-public class UUIDUtil {
+@RestController
+@AllArgsConstructor
+public class DemandCategoryController implements DemandCategoryApi {
 
-    private static final Pattern UUID_REGEX_PATTERN = Pattern.compile(
-        "^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$"
-    );
+    private final DemandCategoryService demandCategoryService;
 
-    public static UUID generateUUIDFromString(String id) {
-        checkValidUUID(id);
-        UUID uuid = UUID.fromString(id);
-        return uuid;
-    }
-
-    public static boolean checkValidUUID(String id) {
-        if (id == null) {
-            return false;
-        }
-        return UUID_REGEX_PATTERN.matcher(id).matches();
+    @Override
+    public ResponseEntity<List<DemandCategoryResponse>> getDemandCategory() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(demandCategoryService.getAllDemandCategory());
     }
 }

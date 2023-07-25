@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -39,6 +40,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.converters.ListToStringConverter;
 
 @Entity
 @Table(name = "capacity_group")
@@ -52,6 +54,9 @@ public class CapacityGroupEntity {
     @GeneratedValue
     @Column(columnDefinition = "uuid", updatable = false, name = "id")
     private UUID id;
+
+    @Column(columnDefinition = "uuid", updatable = false, name = "capacity_group_id")
+    private UUID capacityGroupId;
 
     @Column(name = "material_description_customer")
     private String materialDescriptionCustomer;
@@ -82,4 +87,11 @@ public class CapacityGroupEntity {
 
     @OneToMany(mappedBy = "capacityGroupEntity", cascade = CascadeType.ALL)
     private List<LinkedDemandSeries> linkedDemandSeries;
+
+    @Column(name = "supplier_locations")
+    @Convert(converter = ListToStringConverter.class)
+    private List<String> supplierLocation;
+
+    @Column(name = "name")
+    private String name;
 }

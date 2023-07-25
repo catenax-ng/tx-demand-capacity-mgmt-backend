@@ -21,17 +21,26 @@
  *
  */
 
-package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services;
+package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.controllers;
 
+import eclipse.tractusx.demand_capacity_mgmt_specification.api.UnitMeasureApi;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.UnitMeasure;
 import java.util.List;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.UnitMeasureEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.UnityOfMeasureService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-public interface UnityOfMeasureService {
-    UnitMeasureEntity findById(UUID id);
+@RestController
+@AllArgsConstructor
+public class UnitMeasureController implements UnitMeasureApi {
 
-    List<UnitMeasure> getAllUnitMeasure();
+    private final UnityOfMeasureService unityOfMeasureService;
 
-    UnitMeasure convertEntityToDto(UnitMeasureEntity unitMeasureEntity);
+    @Override
+    public ResponseEntity<List<UnitMeasure>> getUnitMeasure() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(unityOfMeasureService.getAllUnitMeasure());
+    }
 }

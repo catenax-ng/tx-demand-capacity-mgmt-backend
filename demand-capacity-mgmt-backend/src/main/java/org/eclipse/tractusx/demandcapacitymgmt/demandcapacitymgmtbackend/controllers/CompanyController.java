@@ -21,21 +21,27 @@
  *
  */
 
-package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services;
+package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.controllers;
 
+import eclipse.tractusx.demand_capacity_mgmt_specification.api.CompanyApi;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.CompanyDto;
 import java.util.List;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CompanyEntity;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.CompanyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
-public interface CompanyService {
-    CompanyEntity createCompany();
+@RestController
+@AllArgsConstructor
+public class CompanyController implements CompanyApi {
 
-    CompanyEntity getCompanyById(UUID id);
+    private final CompanyService companyService;
 
-    List<CompanyEntity> getCompanyIn(List<UUID> uuidList);
-
-    CompanyDto convertEntityToDto(CompanyEntity companyEntity);
-
-    List<CompanyDto> getAllCompany();
+    @Override
+    public ResponseEntity<List<CompanyDto>> getCompany() throws Exception {
+        List<CompanyDto> companyDtoList = companyService.getAllCompany();
+        return ResponseEntity.status(HttpStatus.OK).body(companyDtoList);
+    }
 }

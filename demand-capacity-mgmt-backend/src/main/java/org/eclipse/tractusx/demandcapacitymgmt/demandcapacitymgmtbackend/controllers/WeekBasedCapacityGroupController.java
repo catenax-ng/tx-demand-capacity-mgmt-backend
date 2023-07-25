@@ -40,7 +40,7 @@ public class WeekBasedCapacityGroupController implements WeekBasedCapacityGroupA
 
     /*  @Override
     public ResponseEntity<Void> postWeekBasedCapacityGroup(
-        WeekBasedCapacityGroupRequest weekBasedCapacityGroupRequest
+        List<WeekBasedCapacityGroupRequest> weekBasedCapacityGroupRequest
     ) {
         weekBasedCapacityGroupService.createWeekBasedCapacityGroup(weekBasedCapacityGroupRequest);
         return ResponseEntity.status(HttpStatus.OK).build();

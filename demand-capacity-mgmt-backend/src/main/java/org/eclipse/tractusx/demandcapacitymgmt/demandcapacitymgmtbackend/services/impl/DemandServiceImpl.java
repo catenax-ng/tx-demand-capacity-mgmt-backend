@@ -162,7 +162,7 @@ public class DemandServiceImpl implements DemandService {
             .stream()
             .map(
                 materialDemandSeriesValue ->
-                    DataConverterUtil.convertFromString(materialDemandSeriesValue.getCalendarWeek().toString())
+                    DataConverterUtil.convertFromString(materialDemandSeriesValue.getCalendarWeek())
             )
             .toList();
 
@@ -181,6 +181,7 @@ public class DemandServiceImpl implements DemandService {
             .stream()
             .map(UUIDUtil::generateUUIDFromString)
             .toList();
+
         List<CompanyEntity> companyEntities = companyService.getCompanyIn(expectedSuppliersLocation);
 
         boolean hasAllCompanies = companyEntities

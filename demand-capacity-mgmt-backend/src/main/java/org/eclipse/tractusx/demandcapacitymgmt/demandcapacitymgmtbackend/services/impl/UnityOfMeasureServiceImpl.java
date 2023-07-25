@@ -21,15 +21,19 @@
  *
  */
 
-package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services;
+package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.impl;
 
+import eclipse.tractusx.demand_capacity_mgmt_specification.model.UnitMeasure;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.UnitMeasureEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.exceptions.BadRequestException;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.UnitMeasureRepository;
+import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services.UnityOfMeasureService;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -47,5 +51,23 @@ public class UnityOfMeasureServiceImpl implements UnityOfMeasureService {
             throw new BadRequestException("unitMeasure don't exist");
         }
         return unitMeasure.get();
+    }
+
+    @Override
+    public List<UnitMeasure> getAllUnitMeasure() {
+        List<UnitMeasureEntity> unitMeasureEntityList = unitMeasureRepository.findAll();
+
+        return unitMeasureEntityList.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public UnitMeasure convertEntityToDto(UnitMeasureEntity unitMeasureEntity) {
+        UnitMeasure unitMeasure = new UnitMeasure();
+
+        unitMeasure.setId(String.valueOf(unitMeasureEntity.getId()));
+        unitMeasure.setDisplayValue(unitMeasureEntity.getDisplayValue());
+        unitMeasure.setCodeValue(unitMeasureEntity.getCodeValue());
+
+        return unitMeasure;
     }
 }

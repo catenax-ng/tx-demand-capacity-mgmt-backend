@@ -32,9 +32,10 @@ create table capacity_group
     changed_at timestamp,
     customer_id uuid constraint capacity_group_customer_id references company_base_data(id),
     supplier_id uuid constraint capacity_group_supplier_id references company_base_data(id),
-    capacity_group_id uuid constraint customer_id references company_base_data(id),
+    capacity_group_id uuid,
     unity_of_measure_id uuid constraint unity_of_measure_id references unity_of_measure(id),
-    supplier_locations varchar(720)
+    supplier_locations varchar(720),
+    name varchar(400)
 );
 
 create table capacity_time_series
@@ -43,6 +44,7 @@ create table capacity_time_series
     calendar_week timestamp not null,
     actual_capacity numeric,
     maximum_capacity numeric,
+    required_amount numeric,
     capacity_group_id uuid constraint capacity_group_id references capacity_group(id)
 );
 
@@ -54,4 +56,14 @@ create table linked_demand_series
     material_number_customer varchar(400),
     material_number_supplier varchar(400),
     capacity_group_id uuid constraint capacity_group_id references capacity_group(id)
+);
+
+create table link_demand
+(
+    id uuid DEFAULT uuid_generate_v4() primary key,
+    material_number_customer varchar(400),
+    material_number_supplier varchar(400),
+    demand_category_id varchar(400),
+    linked boolean,
+    week_based_material_demand_id integer constraint week_based_material_demand_id references week_based_material_demand(id)
 );
