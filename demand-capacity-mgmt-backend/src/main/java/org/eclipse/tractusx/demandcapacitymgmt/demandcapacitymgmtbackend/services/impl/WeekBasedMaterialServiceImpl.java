@@ -69,8 +69,6 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
             //TODO create the Actual Demand and send to the supplier
             ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
         }
-
-
     }
 
     @Override
@@ -80,13 +78,10 @@ public class WeekBasedMaterialServiceImpl implements WeekBasedMaterialService {
         );
 
         linkDemandService.createLinkDemands(weekBasedMaterialDemandEntities);
-
     }
 
     @Override
-    public void createWeekBasedMaterialRequestFromEntity(MaterialDemandEntity materialDemandEntity) {
-        
-    }
+    public void createWeekBasedMaterialRequestFromEntity(MaterialDemandEntity materialDemandEntity) {}
 
     private void validateFields(WeekBasedMaterialDemandRequestDto weekBasedMaterialDemandRequestDto) {
         if (!UUIDUtil.checkValidUUID(weekBasedMaterialDemandRequestDto.getMaterialDemandId())) {

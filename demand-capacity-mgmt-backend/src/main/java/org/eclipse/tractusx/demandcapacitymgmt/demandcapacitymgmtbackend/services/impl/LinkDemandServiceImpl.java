@@ -21,13 +21,13 @@ public class LinkDemandServiceImpl implements LinkDemandService {
     public void createLinkDemands(List<WeekBasedMaterialDemandEntity> weekBasedMaterialDemandEntities) {
         List<LinkDemandEntity> linkDemandEntityList = new LinkedList<>();
 
-        weekBasedMaterialDemandEntities.forEach(weekBasedMaterialDemand -> {
+        weekBasedMaterialDemandEntities.forEach(
+            weekBasedMaterialDemand -> {
+                List<LinkDemandEntity> linkDemandEntity = convertFromWeekBasedMaterial(weekBasedMaterialDemand);
 
-            List<LinkDemandEntity> linkDemandEntity = convertFromWeekBasedMaterial(weekBasedMaterialDemand);
-
-            linkDemandEntityList.addAll(linkDemandEntity);
-
-        });
+                linkDemandEntityList.addAll(linkDemandEntity);
+            }
+        );
 
         linkDemandRepository.saveAll(linkDemandEntityList);
     }

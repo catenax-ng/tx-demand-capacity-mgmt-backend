@@ -69,6 +69,4 @@ public class MaterialDemandEntity {
     @OneToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private DemandSeries demandSeries;
-
-
 }

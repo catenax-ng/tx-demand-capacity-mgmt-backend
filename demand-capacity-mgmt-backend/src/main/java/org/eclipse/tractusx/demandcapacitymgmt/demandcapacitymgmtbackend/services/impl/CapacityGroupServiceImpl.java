@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CapacityGroupEntity;
@@ -86,7 +85,6 @@ public class CapacityGroupServiceImpl implements CapacityGroupService {
     }
 
     private CapacityGroupEntity enrichCapacityGroup(CapacityGroupRequest capacityGroupRequest) {
-
         UUID capacityGroupId = UUID.randomUUID();
         AtomicReference<String> materialNumberCustomer = new AtomicReference<>("");
         AtomicReference<String> materialDescriptionCustomer = new AtomicReference<>("");

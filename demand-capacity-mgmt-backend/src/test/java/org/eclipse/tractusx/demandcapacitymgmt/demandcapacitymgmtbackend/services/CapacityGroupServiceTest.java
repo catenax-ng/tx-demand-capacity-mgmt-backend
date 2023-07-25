@@ -1,7 +1,16 @@
 package org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.services;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.CapacityGroupRequest;
 import eclipse.tractusx.demand_capacity_mgmt_specification.model.CapacityRequest;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.CompanyEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.entities.LinkDemandEntity;
 import org.eclipse.tractusx.demandcapacitymgmt.demandcapacitymgmtbackend.repositories.CapacityGroupRepository;
@@ -12,16 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class CapacityGroupServiceTest {
@@ -41,7 +40,6 @@ public class CapacityGroupServiceTest {
     @Mock
     private LinkDemandRepository linkDemandRepository;
 
-
     private static CapacityGroupRequest capacityGroupRequest = createCapacityGroupRequest();
 
     private static CompanyEntity company = createCompanyEntity();
@@ -49,8 +47,7 @@ public class CapacityGroupServiceTest {
     private LinkDemandEntity linkDemandEntity = createLinkDemandEntity();
 
     @Test
-    void shouldCreateCapacityGroup(){
-
+    void shouldCreateCapacityGroup() {
         when(companyService.getCompanyIn(any())).thenReturn(List.of(company));
         when(unityOfMeasureService.findById(any())).thenReturn(null);
         when(companyService.getCompanyById(any())).thenReturn(company);
@@ -61,9 +58,7 @@ public class CapacityGroupServiceTest {
         verify(capacityGroupRepository, times(1)).save(any());
     }
 
-
-    private static CapacityGroupRequest createCapacityGroupRequest(){
-
+    private static CapacityGroupRequest createCapacityGroupRequest() {
         CapacityGroupRequest capacityGroupRequest = new CapacityGroupRequest();
 
         CapacityRequest capacityRequest = new CapacityRequest();
@@ -81,27 +76,24 @@ public class CapacityGroupServiceTest {
         capacityGroupRequest.setCapacities(List.of(capacityRequest));
 
         return capacityGroupRequest;
-
     }
 
-    private static CompanyEntity createCompanyEntity(){
+    private static CompanyEntity createCompanyEntity() {
         return CompanyEntity
-                .builder()
-                .id(UUID.fromString("08b95a75-11a7-4bea-a958-821b9cb01641"))
-                .myCompany("Test")
-                .companyName("Test")
-                .build();
+            .builder()
+            .id(UUID.fromString("08b95a75-11a7-4bea-a958-821b9cb01641"))
+            .myCompany("Test")
+            .companyName("Test")
+            .build();
     }
 
-    private static LinkDemandEntity createLinkDemandEntity(){
+    private static LinkDemandEntity createLinkDemandEntity() {
         return LinkDemandEntity
-                .builder()
-                .linked(false)
-                .demandCategoryId("")
-                .materialNumberSupplier("")
-                .materialNumberCustomer("")
-                .build();
+            .builder()
+            .linked(false)
+            .demandCategoryId("")
+            .materialNumberSupplier("")
+            .materialNumberCustomer("")
+            .build();
     }
-
-
 }
